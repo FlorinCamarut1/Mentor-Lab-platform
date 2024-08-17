@@ -1,9 +1,9 @@
 import { auth } from "@/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import db from "@/lib/db";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   if (req.method !== "GET") {
     return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
   }
