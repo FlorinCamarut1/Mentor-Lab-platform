@@ -27,12 +27,11 @@ export default async function LocaleLayout({
     <html lang="ro">
       <SessionProvider session={session}>
         <body className={inter.className}>
-          <div className="relative">
+          <div className="relative h-screen">
             <Toaster />
             <MainNavigation currentUserData={session?.user as User} />
             {children}
           </div>
-          <AiChatButton />
         </body>
       </SessionProvider>
     </html>

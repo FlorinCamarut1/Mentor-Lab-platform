@@ -12,10 +12,15 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { navLinkData } from "@/data/navigationData";
 import { NavLink } from "./NavLink";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { User } from "@prisma/client";
+import { FaGraduationCap } from "react-icons/fa6";
+import { useState } from "react";
 
 import MobileInviteCodeDrawer from "../admin/Invitations/MobileInviteCodeDrawer";
+import AiChatButton from "../openAiChat/AiChatButton";
+import { NavLinksTypes } from "@/types";
+
 interface MainNavigationProps {
   currentUserData: User | null;
 }
@@ -23,27 +28,35 @@ interface MainNavigationProps {
 export default function MainNavigation({
   currentUserData,
 }: MainNavigationProps) {
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   return (
-    <header className="grid h-20 w-full grid-cols-3 items-center px-4 md:px-6">
-      <Sheet>
+    <header className="flex h-20 w-full items-center px-4 md:px-6 lg:grid lg:grid-cols-3">
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className="lg:hidden">
             <MenuIcon className="h-6 w-6" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
+
         <SheetContent side="left">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <Link href="/my-profile" prefetch={false}>
-                <Avatar>
-                  <AvatarImage
-                    src={`${currentUserData?.image || "/images/placeholder.png"}`}
-                    alt="avatar image"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </Link>
+              {currentUserData ? (
+                <Link href="/my-profile" prefetch={false}>
+                  <Avatar>
+                    <AvatarImage
+                      src={`${currentUserData?.image || "/images/placeholder.png"}`}
+                      alt="avatar image"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </Link>
+              ) : (
+                <FaGraduationCap size={30} />
+              )}
+
               <SheetTitle className="text-sm text-gray-600">
                 {currentUserData?.name}
               </SheetTitle>
@@ -55,7 +68,13 @@ export default function MainNavigation({
 
           <div className="grid gap-2 py-6">
             {navLinkData.map((navLink) => (
-              <NavLink key={navLink.id} navLinkData={navLink} isMobile={true} />
+              <NavLink
+                key={navLink.id}
+                navLinkData={navLink as NavLinksTypes}
+                isMobile={true}
+                currentUserData={currentUserData}
+                onClick={() => setSheetOpen(false)}
+              />
             ))}
             {currentUserData?.role === "ADMIN" && <MobileInviteCodeDrawer />}
             {currentUserData && (
@@ -72,7 +91,7 @@ export default function MainNavigation({
           </div>
         </SheetContent>
       </Sheet>
-      {currentUserData && (
+      {currentUserData ? (
         //
         <div className="flex items-center gap-2">
           <Link
@@ -89,24 +108,41 @@ export default function MainNavigation({
             </Avatar>
           </Link>
           <div className="hidden items-center justify-center gap-1 lg:flex">
-            <h4 className="font-semibold text-gray-600">Welcome:</h4>
-            <p className="text-gray-400">{currentUserData?.name}</p>
+            <h4 className="font-semibold text-gray-600 md:text-xs xl:text-base">
+              Welcome:
+            </h4>
+            <p className="text-gray-400 md:text-xs xl:text-base">
+              {currentUserData?.name}
+            </p>
           </div>
         </div>
+      ) : (
+        <FaGraduationCap size={30} className="hidden lg:block" />
       )}
       <div className="flex w-full justify-center">
         <ul className="hidden lg:flex">
           {navLinkData.map((navLink) => (
             <li key={navLink.id}>
-              <NavLink navLinkData={navLink} isMobile={false} />
+              <NavLink
+                navLinkData={navLink as NavLinksTypes}
+                isMobile={false}
+                currentUserData={currentUserData}
+              />
             </li>
           ))}
+          {currentUserData && (
+            <li>
+              <AiChatButton />
+            </li>
+          )}
         </ul>
       </div>
       <div className="ml-auto w-fit">
         {!currentUserData && (
           <NavLink
-            navLinkData={{ id: 0, title: "Logare", href: "/auth/login" }}
+            navLinkData={
+              { id: 0, title: "Logare", href: "/auth/login" } as NavLinksTypes
+            }
           />
         )}
         {currentUserData && (
@@ -121,6 +157,11 @@ export default function MainNavigation({
           </Button>
         )}
       </div>
+      {currentUserData && (
+        <div className="flex lg:hidden">
+          <AiChatButton />
+        </div>
+      )}
     </header>
   );
 }

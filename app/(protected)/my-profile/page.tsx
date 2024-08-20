@@ -10,8 +10,6 @@ import TeacherCVInfo from "@/components/my-profile/TeacherCVInfo";
 const MyProfilePage = async () => {
   const session = await auth();
 
-  console.log(session?.user);
-
   return (
     <div className="m-auto min-h-screen max-w-[1200px] p-2">
       <Header title="Profilul meu" subtitle="Actualizează datele personale" />
