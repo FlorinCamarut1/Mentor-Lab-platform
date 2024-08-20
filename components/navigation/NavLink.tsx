@@ -1,27 +1,29 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import React, { MouseEventHandler } from "react";
+import { NavLinksTypes } from "@/types";
 
 import clsx from "clsx";
 import Link from "next/link";
-import React from "react";
+import { User } from "@prisma/client";
 
 export interface NavLinkProps
   extends React.LinkHTMLAttributes<HTMLLinkElement> {
   isMobile?: boolean;
-  navLinkData: {
-    id: number;
-    title: string;
-    href: string;
-  };
+  navLinkData: NavLinksTypes;
+  currentUserData?: User | null;
 }
 const NavLink = React.forwardRef<HTMLLinkElement, NavLinkProps>(
-  ({ className, navLinkData, isMobile }, ref) => {
+  ({ className, navLinkData, isMobile, onClick, currentUserData }, ref) => {
     const pathname = usePathname();
     const isActive = pathname === navLinkData.href;
 
+    if (!currentUserData && navLinkData.protected) return null;
+
     return (
       <Link
+        onClick={onClick as MouseEventHandler}
         href={navLinkData.href}
         className={clsx(
           isMobile

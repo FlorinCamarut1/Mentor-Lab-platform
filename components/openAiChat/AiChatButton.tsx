@@ -7,11 +7,12 @@ import { SiProbot } from "react-icons/si";
 const AiChatButton = () => {
   const [chatBoxOpen, setChatBoxOpen] = useState(false);
   return (
-    <div className="fixed bottom-0 right-0 z-50 p-4">
+    <div>
       {chatBoxOpen ? null : (
         <Button
+          variant="outline"
           onClick={() => setChatBoxOpen((prev) => !prev)}
-          className="rounded-full px-4 py-6"
+          className="bg-gray-300"
         >
           <SiProbot size={20} />
         </Button>

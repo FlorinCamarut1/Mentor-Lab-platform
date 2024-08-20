@@ -13,7 +13,6 @@ export const GET = async (req: NextRequest, context: Context) => {
     const { params } = context;
     const teacherId = params?.teacherId;
 
-    console.log(teacherId);
     const session = await auth();
 
     if (session?.user?.role !== "TEACHER") {
@@ -23,26 +22,31 @@ export const GET = async (req: NextRequest, context: Context) => {
         },
         { status: 401 },
       );
-    } else if (!session.user.pdfHostedUrl) {
+    }
+    if (!session.user.pdfHostedUrl) {
       return NextResponse.json({ error: "Nu aveti CV!" });
-    } else if (session.user.pdfHostedUrl) {
+    }
+    if (session.user.pdfHostedUrl) {
       const cvInfo = await db.cV.findMany({
         where: {
           userId: teacherId as string,
         },
         select: {
+          id: true,
           createdAt: true,
           pdfHostedUrl: true,
           updatedAt: true,
         },
       });
-
-      return NextResponse.json(cvInfo[0]);
+      if (cvInfo.length === 0) {
+        return NextResponse.json({ error: "Nu s-a găsit nici un CV!" });
+      }
+      return NextResponse.json(cvInfo[0], { status: 200 });
     }
   } catch (error) {
     return NextResponse.json(
       { error: "Ceva nu a mers bine!" },
-      { status: 500 },
+      { status: 404 },
     );
   }
 };

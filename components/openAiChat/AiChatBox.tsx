@@ -47,20 +47,20 @@ const AiChatBox = ({ open, onClose }: AiChatBotProps) => {
   return (
     <div
       className={cn(
-        "relative bottom-0 right-0 z-50 w-full max-w-[500px] rounded-md p-1 xl:right-20",
+        "bottom-0 right-0 z-50 h-full w-full max-w-[500px] rounded-md p-1 md:h-[600px] xl:right-20",
         open ? "fixed" : "hidden",
       )}
     >
-      <div className="absolute right-0 top-0 flex w-full justify-end p-2">
-        <Button
-          className="rounded-full px-2 py-1"
-          variant="ghost"
-          onClick={onClose}
-        >
-          <IoCloseSharp size={20} />
-        </Button>
-      </div>
-      <div className="flex h-[600px] flex-col rounded-md border bg-background shadow-xl">
+      <div className="flex h-full flex-col rounded-md border bg-background shadow-xl md:h-[600px]">
+        <div className="right-0 top-0 flex w-full justify-end p-2">
+          <Button
+            className="rounded-full px-2 py-1"
+            variant="ghost"
+            onClick={onClose}
+          >
+            <IoCloseSharp size={20} />
+          </Button>
+        </div>
         <div
           className="mt-3 h-full overflow-y-auto px-3 scrollbar scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full"
           ref={scrollRef}

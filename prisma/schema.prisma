@@ -47,16 +47,6 @@ model Account {
   @@map("accounts")
 }
 
-model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique @map("session_token")
-  userId       String   @db.ObjectId
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
-
 model User {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String?
@@ -65,8 +55,9 @@ model User {
   password String?
   role     UserRole  @default(STUDENT)
   accounts Account[]
-  sessions Session[]
-  CV       CV[]
+
+  CV               CV[]
+  studentsAccepted Student[]
 }
 
 model InviteToken {
@@ -77,4 +68,11 @@ model InviteToken {
 
   @@unique([id, token])
   @@map("verificationtokens")
+}
+
+model Student {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  teacher   User?  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  teacherId String @db.ObjectId
 }

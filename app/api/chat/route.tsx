@@ -37,8 +37,6 @@ export const POST = async (req: Request) => {
       },
     });
 
-    console.log("relevantCvs", relevantCVs);
-
     const systemMessage: CoreMessage = {
       role: "system" as any,
       content:

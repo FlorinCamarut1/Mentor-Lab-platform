@@ -1,5 +1,3 @@
-import { create } from "zustand";
-import { CV } from "@prisma/client";
 import { auth } from "@/auth";
 import { deleteFileFromS3, uploadFileToS3 } from "@/lib/aws";
 import { NextResponse } from "next/server";

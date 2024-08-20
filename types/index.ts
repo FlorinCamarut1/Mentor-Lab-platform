@@ -10,3 +10,10 @@ export type SessionType = {
   };
   expires: string;
 };
+
+export type NavLinksTypes = {
+  id: number;
+  title: string;
+  href: string;
+  protected: boolean;
+};
