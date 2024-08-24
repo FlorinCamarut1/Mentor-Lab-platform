@@ -1,17 +1,16 @@
 "use client";
-import { columns } from "@/components/dashboard/columns";
-import { DataTable } from "@/components/dashboard/data-table";
-
+import Loading from "@/app/loading";
 import useAllUsers from "@/hooks/users/useAllUsers";
 
-const DashboardPage = () => {
-  const { data: allUsersData } = useAllUsers();
+import { DataTable } from "@/components/dashboard/data-table";
+import { columns } from "@/components/dashboard/columns";
 
-  return (
-    <div className="m-auto min-h-screen max-w-[1200px] p-2">
-      <DataTable columns={columns} data={allUsersData} />
-    </div>
-  );
+const DashboardPage = () => {
+  const { data } = useAllUsers();
+
+  if (!data) return <Loading />;
+
+  return <DataTable columns={columns} data={data} />;
 };
 
 export default DashboardPage;

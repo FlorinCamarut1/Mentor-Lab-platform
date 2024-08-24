@@ -10,9 +10,15 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const isAdmin = req.auth?.user?.role === "ADMIN";
 
-  const isProtectedRoute = PROTECTED_ROUTES.includes(nextUrl.pathname);
-  const isAuthRoute = AUTH_ROUTES.includes(nextUrl.pathname);
-  const isAdminRoute = ADMIN_ROUTES.includes(nextUrl.pathname);
+  const isProtectedRoute = PROTECTED_ROUTES.some((path) =>
+    nextUrl.pathname.startsWith(path),
+  );
+  const isAuthRoute = AUTH_ROUTES.some((path) =>
+    nextUrl.pathname.startsWith(path),
+  );
+  const isAdminRoute = ADMIN_ROUTES.some((path) =>
+    nextUrl.pathname.startsWith(path),
+  );
 
   let callbackUrl = nextUrl.pathname;
   if (nextUrl.search) {
@@ -45,6 +51,8 @@ export default auth((req) => {
 export const config = {
   matcher: [
     "/landing/:path*",
+    "/requests/:path*",
+    "/profile/:path*",
     "/((?!.+\\.[\\w]+$|_next).*)",
     "/",
     "/(api|trpc)(.*)",

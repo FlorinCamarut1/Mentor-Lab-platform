@@ -1,5 +1,12 @@
 import * as z from "zod";
 
+const phoneRegex = /^(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+const githubRegex = /^https:\/\/(www\.)?github\.com\/[A-Za-z0-9_-]+\/?$/;
+const linkedinRegex =
+  /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+\/?$/;
+const facebookRegex = /^https:\/\/(www\.)?facebook\.com\/[A-Za-z0-9_-]+\/?$/;
+
 export const RegisterSchema = z
   .object({
     email: z.string().email(),
@@ -35,6 +42,31 @@ export const LoginSchema = z.object({
 
 export const EditAccountSchema = z
   .object({
+    phoneNumber: z
+      .string()
+      .optional()
+      .refine((val) => val === "" || phoneRegex.test(val as string), {
+        message: "Număr de telefon invalid!",
+      }),
+    gitHubUrl: z
+      .string()
+      .optional()
+      .refine((val) => val === "" || githubRegex.test(val as string), {
+        message: "Link către Github invalid!",
+      }),
+    facebookUrl: z
+      .string()
+      .optional()
+      .refine((val) => val === "" || facebookRegex.test(val as string), {
+        message: "Link către Facebook invalid!",
+      }),
+    linkedlnUrl: z
+      .string()
+      .optional()
+      .refine((val) => val === "" || linkedinRegex.test(val as string), {
+        message: "Link către Linkedin invalid!",
+      }),
+
     email: z.string().email().optional(),
     name: z
       .string()
@@ -90,3 +122,8 @@ export const EditAccountSchema = z
       path: ["oldPassword"], // Apply the error to oldPassword field
     },
   );
+
+export const JoinRequestSchema = z.object({
+  projectName: z.string().min(1, { message: "Câmp obligatoriu!" }),
+  projectDescription: z.string().min(1, { message: "Câmp obligatoriu!" }),
+});

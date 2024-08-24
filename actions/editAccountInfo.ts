@@ -21,7 +21,16 @@ export const editAccountInfo = async (
   if (!session) {
     return { error: "Sessiune expirată!" };
   }
-  const { name, email, oldPassword, newPassword } = parseValues.data;
+  const {
+    name,
+    email,
+    oldPassword,
+    newPassword,
+    phoneNumber,
+    gitHubUrl,
+    facebookUrl,
+    linkedlnUrl,
+  } = parseValues.data;
 
   try {
     const currentUser = await db.user.findUnique({
@@ -56,6 +65,10 @@ export const editAccountInfo = async (
       });
     }
     if (
+      phoneNumber === currentUser?.phoneNumber &&
+      gitHubUrl === currentUser?.gitHubUrl &&
+      facebookUrl === currentUser?.facebookUrl &&
+      linkedlnUrl === currentUser?.linkedlnUrl &&
       name === currentUser?.name &&
       email === currentUser?.email &&
       oldPassword === "" &&
@@ -70,6 +83,10 @@ export const editAccountInfo = async (
       data: {
         name,
         email,
+        phoneNumber,
+        gitHubUrl,
+        facebookUrl,
+        linkedlnUrl,
       },
     });
 

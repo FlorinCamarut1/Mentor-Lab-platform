@@ -36,9 +36,6 @@ const InvitationsContainer = () => {
     });
   };
 
-  const hideScrollbarWhenEmpty =
-    invitationsData?.length <= 8 ? "no-scrollbar" : "";
-
   return (
     <>
       <Button onClick={generateInviteCode} className="m-2 hidden lg:block">

@@ -120,7 +120,7 @@ export default function MainNavigation({
         <FaGraduationCap size={30} className="hidden lg:block" />
       )}
       <div className="flex w-full justify-center">
-        <ul className="hidden lg:flex">
+        <ul className="hidden gap-1 lg:flex">
           {navLinkData.map((navLink) => (
             <li key={navLink.id}>
               <NavLink
