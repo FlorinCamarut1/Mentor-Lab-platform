@@ -21,6 +21,7 @@ model CV {
   userId       String   @db.ObjectId
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  profileUrl   String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -48,16 +49,19 @@ model Account {
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String?
-  email    String?   @unique
-  image    String?
-  password String?
-  role     UserRole  @default(STUDENT)
-  accounts Account[]
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  email       String?   @unique
+  image       String?
+  password    String?
+  phoneNumber String?
+  gitHubUrl   String?
+  facebookUrl String?
+  linkedlnUrl String?
+  role        UserRole  @default(STUDENT)
+  accounts    Account[]
 
-  CV               CV[]
-  studentsAccepted Student[]
+  CV CV[]
 }
 
 model InviteToken {
@@ -70,9 +74,31 @@ model InviteToken {
   @@map("verificationtokens")
 }
 
-model Student {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  teacher   User?  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  teacherId String @db.ObjectId
+model JoinRequest {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  studentId          String   @db.ObjectId
+  status             String   @default("PENDING")
+  teacherId          String
+  expires            DateTime
+  createdAt          DateTime @default(now())
+  projectName        String
+  projectDescription String
+}
+
+model TeacherAcceptedStudents {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  teacherId               String
+  currentNumberOfStudents Int               @default(0)
+  maxNumberOfStudents     Int               @default(3)
+  students                AcceptedStudent[]
+}
+
+model AcceptedStudent {
+  id                 String                  @id @default(auto()) @map("_id") @db.ObjectId
+  teamId             String                  @db.ObjectId
+  studentId          String                  @db.ObjectId
+  createdAt          DateTime                @default(now())
+  projectName        String
+  projectDescription String
+  student            TeacherAcceptedStudents @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }

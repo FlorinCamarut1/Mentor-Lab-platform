@@ -40,7 +40,7 @@ export const register = async (
       if (!tokenIsValid) {
         return { error: "Token invalid!" };
       } else if (tokenIsValid) {
-        await db.user.create({
+        const teacher = await db.user.create({
           data: {
             email,
             name,
@@ -48,6 +48,7 @@ export const register = async (
             role: "TEACHER",
           },
         });
+
         await db.inviteToken.deleteMany({
           where: {
             token: inviteToken,

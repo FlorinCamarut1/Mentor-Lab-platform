@@ -85,6 +85,7 @@ export const POST = async (req: Request) => {
             createdAt: new Date(),
             updatedAt: new Date(),
             pdfHostedUrl: fileUrl,
+            profileUrl: `/profile/${existingUser?.email}`,
           },
         });
         await cvIndex.upsert([

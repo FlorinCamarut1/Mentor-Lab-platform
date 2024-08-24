@@ -9,6 +9,8 @@ import { SiProbot } from "react-icons/si";
 import { FaTrash } from "react-icons/fa6";
 import { CiStop1 } from "react-icons/ci";
 
+import Link from "next/link";
+
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
@@ -131,8 +133,44 @@ function ChatMessage({
   message: Pick<Message, "role" | "content">;
 }) {
   const session = useSession();
-
   const isAiMessage = role === "assistant";
+
+  // Function to render the content with Next.js Link components
+  const renderMessageContent = (text: string) => {
+    const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    // Extract and split the text into parts containing text and links
+    while ((match = markdownLinkRegex.exec(text)) !== null) {
+      const plainText = text.slice(lastIndex, match.index);
+      const linkText = match[1];
+      const linkUrl = match[2];
+
+      // Push plain text before the link
+      if (plainText) {
+        parts.push(plainText);
+      }
+
+      // Push the Link component with the extracted URL and text
+      parts.push(
+        <Link key={linkUrl} href={linkUrl} className="text-blue-500 underline">
+          {linkText}
+        </Link>,
+      );
+
+      lastIndex = markdownLinkRegex.lastIndex;
+    }
+
+    // Push any remaining plain text after the last link
+    if (lastIndex < text.length) {
+      parts.push(text.slice(lastIndex));
+    }
+
+    return parts;
+  };
+
   return (
     <div
       className={cn(
@@ -147,7 +185,7 @@ function ChatMessage({
           isAiMessage ? "bg-background" : "bg-primary text-primary-foreground",
         )}
       >
-        {content}
+        {renderMessageContent(content)}
       </p>
       {!isAiMessage && session.data?.user?.image && (
         <Image

@@ -1,15 +1,18 @@
 "use client";
 
+import * as React from "react";
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
-  SortingState,
-  getSortedRowModel,
-  ColumnFiltersState,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
-  VisibilityState,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -21,16 +24,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Loading from "@/app/loading";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
+import { DataTablePagination } from "./data-table-pagination";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,78 +37,39 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
+      rowSelection,
+      columnFilters,
     },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  if (!data) return <Loading />;
-
   return (
-    <div>
-      <div className="flex items-center py-4">
-        <div className="flex gap-2">
-          <Input
-            placeholder="Caută după email..."
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <Input
-            placeholder="Caută după nume..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Coloană
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.columnDef.meta?.headerText}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+    <div className="space-y-4">
+      <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -120,7 +77,7 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -162,25 +119,8 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
       </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }

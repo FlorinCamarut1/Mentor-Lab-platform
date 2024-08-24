@@ -20,8 +20,8 @@ import { toast } from "react-hot-toast";
 import { useTransition } from "react";
 import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
-import { User } from "@prisma/client";
 import { editAccountInfo } from "@/actions/editAccountInfo";
+import { User } from "@prisma/client";
 
 interface RegisterFormProps {
   isEditing?: boolean;
@@ -34,14 +34,18 @@ const RegisterForm = ({
 }: RegisterFormProps) => {
   const [isPending, startTransition] = useTransition();
   const inviteToken = useSearchParams().get("inviteToken");
-
   const registerOrEditSchema = z.union([RegisterSchema, EditAccountSchema]);
+
   const defaultValues = isEditing
     ? {
-        email: currentUserData?.email as string,
-        name: currentUserData?.name as string,
+        email: (currentUserData?.email as string) || "",
+        name: (currentUserData?.name as string) || "",
         oldPassword: "",
         newPassword: "",
+        phoneNumber: currentUserData?.phoneNumber ?? "",
+        gitHubUrl: currentUserData?.gitHubUrl ?? "",
+        facebookUrl: currentUserData?.facebookUrl ?? "",
+        linkedlnUrl: currentUserData?.linkedlnUrl ?? "",
       }
     : {
         email: "",
@@ -168,6 +172,82 @@ const RegisterForm = ({
             </FormItem>
           )}
         />
+        {isEditing && (
+          <>
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Număr telefon</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex: 0741234567"
+                      {...field}
+                      isPending={isPending}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="gitHubUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Link GitHub</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex: https://github.com/mihaiPop"
+                      {...field}
+                      isPending={isPending}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="facebookUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Link Facebook</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex: https://facebook.com/mihaiPop"
+                      {...field}
+                      isPending={isPending}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="linkedlnUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Link Linkedln</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex: https://linkedln.com/mihaiPop"
+                      {...field}
+                      isPending={isPending}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
         <Button className="w-full" type="submit" disabled={isPending}>
           {isEditing ? "Editează" : "Crează"}
         </Button>

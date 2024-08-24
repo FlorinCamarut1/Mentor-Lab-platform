@@ -40,10 +40,13 @@ export const POST = async (req: Request) => {
     const systemMessage: CoreMessage = {
       role: "system" as any,
       content:
-        "Ești un bot assistent pentru aplicația Mentor Lab, te numești Mentor-Lab-Bot, tu vei ajuta studenții care te întreabă despre profesori folosindu-te de informațiile existente, ordoneaza un pic logic datele pe care le primești când răspunzi si ofera sugestii de profesori care s-ar potrivi conform experientei cu cererea studentului" +
+        "Ești un bot assistent pentru aplicația Mentor Lab, te numești Mentor-Lab-Bot, tu vei ajuta studenții care te întreabă despre profesori folosindu-te de informațiile existente, ordonează un pic logic datele pe care le primești când răspunzi și oferă sugestii de profesori care s-ar potrivi conform experientei cu cererea studentului, trimite linkul către profilul profesorului doar dacă ți se cere asta " +
         "Informațiile relevante din această aplicație sunt: \n" +
         relevantCVs
-          .map((cv) => `Titlu: ${cv.title}\n\nConținut\n${cv.content}`)
+          .map(
+            (cv) =>
+              `Titlu: ${cv.title}\n\nConținut:\n ${cv.content}\n\nLink profil:\n<Link href="${cv.profileUrl}"/>`,
+          )
           .join("\n\n"),
     };
 
