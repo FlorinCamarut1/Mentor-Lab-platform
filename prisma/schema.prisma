@@ -61,7 +61,8 @@ model User {
   role        UserRole  @default(STUDENT)
   accounts    Account[]
 
-  CV CV[]
+  CV              CV[]
+  AcceptedStudent AcceptedStudent?
 }
 
 model InviteToken {
@@ -96,9 +97,11 @@ model TeacherAcceptedStudents {
 model AcceptedStudent {
   id                 String                  @id @default(auto()) @map("_id") @db.ObjectId
   teamId             String                  @db.ObjectId
-  studentId          String                  @db.ObjectId
+  teacherId          String
+  studentId          String                  @unique @db.ObjectId
   createdAt          DateTime                @default(now())
   projectName        String
   projectDescription String
   student            TeacherAcceptedStudents @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  studentData        User                    @relation(fields: [studentId], references: [id], onDelete: Cascade)
 }

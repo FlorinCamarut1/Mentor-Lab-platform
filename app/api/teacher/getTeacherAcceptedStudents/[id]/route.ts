@@ -17,13 +17,18 @@ export const GET = async (
       { status: 401 },
     );
   }
+
   try {
     const teacherAcceptedStudents = await db.teacherAcceptedStudents.findMany({
       where: {
         teacherId: params.teacherId,
       },
       include: {
-        students: true,
+        students: {
+          include: {
+            studentData: true,
+          },
+        },
       },
     });
 

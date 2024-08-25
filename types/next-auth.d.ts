@@ -1,4 +1,4 @@
-import { CV } from "@prisma/client";
+import { AcceptedStudent, CV, User } from "@prisma/client";
 // types/next-auth.d.ts
 import { DefaultSession, DefaultUser } from "next-auth";
 import { CV, UserRole } from "@prisma/client";

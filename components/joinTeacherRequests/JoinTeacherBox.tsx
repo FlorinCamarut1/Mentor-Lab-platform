@@ -14,6 +14,7 @@ import timeElapsedSince from "@/utils/timeElapseSince";
 import toast from "react-hot-toast";
 import Loading from "@/app/loading";
 import { acceptRequest } from "@/actions/requests/acceptRequest";
+import SendMessageBadge from "../common/SendMessageBadge";
 
 interface JoinTeacherBoxProps {
   requestData: JoinRequest;
@@ -84,7 +85,12 @@ const JoinTeacherBox = ({
             name: "Refuzat",
             color: "bg-red-500",
           }
-        : null;
+        : requestData?.status === "ACCEPTED"
+          ? {
+              name: "Acceptat",
+              color: "bg-green-500",
+            }
+          : null;
   if (isPending) return <Loading />;
 
   return (
@@ -118,13 +124,7 @@ const JoinTeacherBox = ({
       )}
 
       {teacherControls}
-      <Badge
-        className="absolute right-2 top-2 cursor-pointer rounded-full bg-primary px-2 py-1"
-        onClick={() => router.push(`/messages/${sendMessageTo}`)}
-      >
-        Trimite un mesaj
-        <MessageCircleIcon size={20} className="ml-2" />
-      </Badge>
+      <SendMessageBadge sendMessageTo={sendMessageTo} />
     </Card>
   );
 };

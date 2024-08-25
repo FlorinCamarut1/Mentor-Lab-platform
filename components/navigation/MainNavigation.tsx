@@ -141,7 +141,12 @@ export default function MainNavigation({
         {!currentUserData && (
           <NavLink
             navLinkData={
-              { id: 0, title: "Logare", href: "/auth/login" } as NavLinksTypes
+              {
+                id: 0,
+                title: "Logare",
+                href: "/auth/login",
+                role: [undefined],
+              } as NavLinksTypes
             }
           />
         )}

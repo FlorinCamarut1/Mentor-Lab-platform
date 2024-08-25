@@ -12,6 +12,13 @@ export const GET = async (
   }
   const currentUser = await getCurrentUser();
   try {
+    await db.joinRequest.deleteMany({
+      where: {
+        expires: {
+          lt: new Date(),
+        },
+      },
+    });
     if (currentUser?.role === "TEACHER") {
       const studentRequests = await db.joinRequest.findMany({
         where: {

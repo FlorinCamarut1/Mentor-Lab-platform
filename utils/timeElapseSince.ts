@@ -20,7 +20,7 @@ const timeElapsedSince = (date: Date) => {
     return `${minutes === 1 ? "1 minut" : `${minutes} minute`} `;
 
   const hours = differenceInHours(now, pastDate);
-  if (hours < 24) return `${hours === 1 ? "1 ora" : `${hours} ore`} `;
+  if (hours < 24) return `${hours === 1 ? "1 oră" : `${hours} ore`} `;
 
   const days = differenceInDays(now, pastDate);
   if (days < 7) return `${days === 1 ? "1 zi" : `${days} zile`} `;

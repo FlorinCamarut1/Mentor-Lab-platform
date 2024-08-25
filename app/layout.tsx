@@ -7,7 +7,6 @@ import { Toaster } from "react-hot-toast";
 import { User } from "@prisma/client";
 
 import MainNavigation from "@/components/navigation/MainNavigation";
-import AiChatButton from "@/components/openAiChat/AiChatButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
