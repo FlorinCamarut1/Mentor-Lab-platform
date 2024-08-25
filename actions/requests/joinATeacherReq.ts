@@ -23,6 +23,16 @@ export async function joinATeacherReq(
   const { projectName, projectDescription } = parseValues.data;
 
   try {
+    const isAlreadyTutored = await db.acceptedStudent.findMany({
+      where: {
+        studentId: session?.user?.id,
+      },
+    });
+
+    if (isAlreadyTutored?.[0]) {
+      return { error: "Ești înscris deja unui mentor!" };
+    }
+
     await db.joinRequest.create({
       data: {
         studentId: session?.user?.id,
@@ -36,6 +46,4 @@ export async function joinATeacherReq(
   } catch (error) {
     return { error: "Ceva nu a mers bine!" };
   }
-
-  // todo: check if you already applied and teacher is avaible
 }

@@ -68,7 +68,7 @@ const AiChatBox = ({ open, onClose }: AiChatBotProps) => {
           ref={scrollRef}
         >
           {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
+            <ChatMessage key={message.id} message={message} onClick={onClose} />
           ))}
           {isLoading && lastMessageIsUser && (
             <ChatMessage
@@ -129,8 +129,10 @@ export default AiChatBox;
 
 function ChatMessage({
   message: { role, content },
+  onClick,
 }: {
   message: Pick<Message, "role" | "content">;
+  onClick?: () => void;
 }) {
   const session = useSession();
   const isAiMessage = role === "assistant";
@@ -155,7 +157,12 @@ function ChatMessage({
 
       // Push the Link component with the extracted URL and text
       parts.push(
-        <Link key={linkUrl} href={linkUrl} className="text-blue-500 underline">
+        <Link
+          key={linkUrl}
+          href={linkUrl}
+          className="text-blue-500 underline"
+          onClick={onClick}
+        >
           {linkText}
         </Link>,
       );

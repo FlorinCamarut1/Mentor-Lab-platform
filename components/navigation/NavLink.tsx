@@ -3,10 +3,10 @@
 import { usePathname } from "next/navigation";
 import React, { MouseEventHandler } from "react";
 import { NavLinksTypes } from "@/types";
+import { User } from "@prisma/client";
 
 import clsx from "clsx";
 import Link from "next/link";
-import { User } from "@prisma/client";
 
 export interface NavLinkProps
   extends React.LinkHTMLAttributes<HTMLLinkElement> {
@@ -18,8 +18,12 @@ const NavLink = React.forwardRef<HTMLLinkElement, NavLinkProps>(
   ({ className, navLinkData, isMobile, onClick, currentUserData }, ref) => {
     const pathname = usePathname();
     const isActive = pathname === navLinkData.href;
+    const roleBasedRoutes = navLinkData?.role?.some(
+      (role) => currentUserData?.role === role,
+    );
 
     if (!currentUserData && navLinkData.protected) return null;
+    if (!roleBasedRoutes) return null;
 
     return (
       <Link

@@ -1,3 +1,4 @@
+import { roles } from "./../components/dashboard/data/data";
 import { UserRole } from "@prisma/client";
 
 export type SessionType = {
@@ -16,4 +17,5 @@ export type NavLinksTypes = {
   title: string;
   href: string;
   protected: boolean;
+  role: UserRole[] | undefined[];
 };

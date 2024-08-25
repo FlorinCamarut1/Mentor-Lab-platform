@@ -9,6 +9,7 @@ export const PROTECTED_ROUTES = [
   "/my-profile",
   "/profile",
   "/requests",
+  "/team",
 ];
 
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";

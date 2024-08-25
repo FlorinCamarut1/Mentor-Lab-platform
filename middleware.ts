@@ -50,6 +50,7 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
+    "/team/:path*",
     "/landing/:path*",
     "/requests/:path*",
     "/profile/:path*",

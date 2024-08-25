@@ -50,6 +50,7 @@ export const acceptRequest = async (requestId: string) => {
         projectName: request.projectName,
         projectDescription: request.projectDescription,
         teamId: existingTeacherAcceptedStudents?.[0]?.id,
+        teacherId: existingTeacherAcceptedStudents?.[0]?.teacherId,
       },
     });
 
@@ -60,6 +61,15 @@ export const acceptRequest = async (requestId: string) => {
       data: {
         currentNumberOfStudents:
           existingTeacherAcceptedStudents[0].currentNumberOfStudents + 1,
+      },
+    });
+
+    await db.joinRequest.update({
+      where: {
+        id: request.id,
+      },
+      data: {
+        status: "ACCEPTED",
       },
     });
     return { success: "Studentul a fost acceptat!" };
