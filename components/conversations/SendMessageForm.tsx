@@ -101,7 +101,7 @@ const SendMessageForm = ({
   useEffect(() => {
     inputRef.current?.focus();
     scrollToBottom();
-  }, []);
+  }, [scrollToBottom]);
 
   return (
     <Form {...form}>
