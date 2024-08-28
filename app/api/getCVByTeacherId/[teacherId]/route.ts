@@ -15,6 +15,13 @@ export const GET = async (req: NextRequest, context: Context) => {
 
     const session = await auth();
 
+    if (!session) {
+      return NextResponse.json(
+        { error: "Trebuie să fiți autentificat!" },
+        { status: 401 },
+      );
+    }
+
     if (session?.user?.role !== "TEACHER") {
       return NextResponse.json(
         {

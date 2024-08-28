@@ -26,10 +26,10 @@ export default async function LocaleLayout({
     <html lang="ro">
       <SessionProvider session={session}>
         <body className={inter.className}>
-          <div className="relative h-screen">
+          <div className="relative">
             <Toaster />
             <MainNavigation currentUserData={session?.user as User} />
-            {children}
+            <div className="m-auto h-full max-w-[1200px] p-2">{children}</div>
           </div>
         </body>
       </SessionProvider>

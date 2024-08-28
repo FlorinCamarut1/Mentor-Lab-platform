@@ -41,4 +41,11 @@ export const navLinkData = [
     protected: true,
     role: ["STUDENT"],
   },
+  {
+    id: 7,
+    title: "Conversațiile tale",
+    href: "/conversations",
+    protected: true,
+    role: ["STUDENT", "TEACHER", "ADMIN"],
+  },
 ];

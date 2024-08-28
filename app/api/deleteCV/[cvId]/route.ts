@@ -13,6 +13,13 @@ export const DELETE = async (req: NextRequest, context: Context) => {
   }
 
   const session = await auth();
+
+  if (!session) {
+    return NextResponse.json(
+      { error: "Trebuie să fiți autentificat!" },
+      { status: 401 },
+    );
+  }
   const existingUser = await getUserById(session?.user?.id as string);
   const { params } = context;
   const cvId = params?.cvId;

@@ -10,7 +10,7 @@ const HomePage = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
-        <section className="w-full bg-gradient-to-b from-white to-gray-100 py-12 md:py-24 lg:py-32 xl:py-48">
+        <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-b from-white to-gray-100 py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -138,7 +138,7 @@ const HomePage = () => {
           </div>
         </section>
       </main>
-      <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
+      <footer className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex w-screen shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
         <p className="text-xs text-gray-500 dark:text-gray-400">
           © 2023 Mentor-Lab. Toate drepturile rezervate.
         </p>

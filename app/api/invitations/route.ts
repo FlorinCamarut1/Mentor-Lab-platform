@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getCurrentUser } from "./../../../actions/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 
 import db from "@/lib/db";
@@ -8,9 +8,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
   }
   try {
-    const session = await auth();
+    const currentUser = await getCurrentUser();
 
-    if (session?.user?.role !== "ADMIN")
+    if (!currentUser) {
+      return NextResponse.json(
+        { error: "Trebuie să fiți autentificat!" },
+        { status: 401 },
+      );
+    }
+
+    if (currentUser?.role !== "ADMIN")
       return new Response(null, { status: 401 });
 
     const inviteTokens = await db.inviteToken.findMany({

@@ -13,7 +13,7 @@ const DashboardPage = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <DataTable columns={columns} data={data} />;
+      <DataTable columns={columns} data={data} />
     </Suspense>
   );
 };
