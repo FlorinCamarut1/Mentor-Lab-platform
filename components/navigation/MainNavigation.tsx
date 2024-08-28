@@ -107,13 +107,11 @@ export default function MainNavigation({
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </Link>
-          <div className="hidden items-center justify-center gap-1 lg:flex">
+          <div className="hidden items-center justify-center gap-1 xl:flex">
             <h4 className="font-semibold text-gray-600 md:text-xs xl:text-base">
               Welcome:
             </h4>
-            <p className="text-gray-400 md:text-xs xl:text-base">
-              {currentUserData?.name}
-            </p>
+            <p className="text-gray-400">{currentUserData?.name}</p>
           </div>
         </div>
       ) : (

@@ -10,7 +10,7 @@ const MyProfilePage = async () => {
   const currentUserData = await getCurrentUser();
 
   return (
-    <div className="m-auto min-h-screen max-w-[1200px] p-2">
+    <>
       <Header title="Profilul meu" subtitle="Actualizează datele personale" />
       <div className="grid grid-cols-1 justify-center gap-4 md:grid-cols-2">
         <RegisterForm isEditing={true} currentUserData={currentUserData!} />
@@ -24,7 +24,7 @@ const MyProfilePage = async () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

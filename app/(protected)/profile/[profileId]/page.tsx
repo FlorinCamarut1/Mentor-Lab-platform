@@ -15,7 +15,7 @@ import {
   FileTextIcon,
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTeacherAcceptedStudents } from "@/hooks/teachers/useTeacherAcceptedStudents";
 
 import Link from "next/link";
@@ -25,10 +25,15 @@ import Loading from "@/app/loading";
 import JoinTeacherBox from "@/components/joinTeacherRequests/JoinTeacherBox";
 import TeacherAvaibleSpotsPill from "@/components/profile/TeacherAvaibleSpotsPill";
 import useReqByUserId from "@/hooks/joinTeacherRequest/useReqByUserId";
+import { useTransition } from "react";
+import { createConversation } from "@/actions/conversation/createConversation";
+import toast from "react-hot-toast";
 
 export default function Component() {
   const email = usePathname().split("/").pop() as string;
+  const router = useRouter();
 
+  const [isPending, startTransition] = useTransition();
   const { data: profileData } = useUserByEmail(email);
   const { data: requestData, mutate: mutateRequestData } = useReqByUserId(
     profileData?.id,
@@ -41,10 +46,22 @@ export default function Component() {
     teacherAcceptedStudentsData?.[0]?.maxNumberOfStudents ===
     teacherAcceptedStudentsData?.[0]?.currentNumberOfStudents;
 
+  const startConversationHandler = () => {
+    startTransition(() => {
+      createConversation(profileData?.id).then((res) => {
+        if (res.success) {
+          router.push(`/conversations?conversation=${res?.conversation?.id}`);
+        } else {
+          toast.error(res.error as string);
+        }
+      });
+    });
+  };
+
   if (!profileData) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-white px-4 py-12 sm:px-6 lg:px-8">
+    <div className="px-4 py-12 sm:px-6 lg:px-8">
       <Card className="mx-auto max-w-2xl shadow-lg">
         <CardContent className="p-8">
           <div className="mb-8 flex flex-col items-center">
@@ -57,11 +74,8 @@ export default function Component() {
             </Avatar>
             <h1 className="text-2xl font-bold">{profileData?.name}</h1>
             <p className="text-gray-600">{profileData?.role}</p>
-            <Button asChild className="mt-4">
-              <a href="/message" className="flex items-center">
-                <MessageCircleIcon className="mr-2 h-4 w-4" /> Trimite-mi un
-                mesaj
-              </a>
+            <Button className="mt-4" onClick={startConversationHandler}>
+              <MessageCircleIcon className="mr-2 h-4 w-4" /> Trimite-mi un mesaj
             </Button>
           </div>
 

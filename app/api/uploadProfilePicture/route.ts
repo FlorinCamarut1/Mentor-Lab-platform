@@ -1,8 +1,7 @@
 import { getUserById } from "@/lib/dbUtils";
-
-import { auth } from "@/auth";
 import { deleteFileFromS3, uploadFileToS3 } from "@/lib/aws";
 import { NextResponse } from "next/server";
+import { getCurrentUser } from "@/actions/getCurrentUser";
 
 import db from "@/lib/db";
 
@@ -11,7 +10,14 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
   }
 
-  const session = await auth();
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return NextResponse.json(
+      { error: "Nu sunteți autentificat!" },
+      { status: 401 },
+    );
+  }
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
@@ -23,7 +29,7 @@ export const POST = async (req: Request) => {
       );
     }
 
-    const existingUser = await getUserById(session?.user?.id as string);
+    const existingUser = await getUserById(currentUser?.id as string);
 
     if (existingUser?.image !== null) {
       const existingImage = existingUser?.image.split(".com/").pop();
@@ -36,7 +42,7 @@ export const POST = async (req: Request) => {
     if (fileUrl) {
       await db.user.update({
         where: {
-          id: session?.user?.id,
+          id: currentUser?.id,
         },
         data: {
           image: fileUrl,

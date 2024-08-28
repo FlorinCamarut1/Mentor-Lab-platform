@@ -21,6 +21,9 @@ import {
 // import { labels } from "../data/data";
 import { UserTableType } from "./data/schema";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { createConversation } from "@/actions/conversation/createConversation";
+import toast from "react-hot-toast";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData> & { original: UserTableType };
@@ -30,6 +33,20 @@ export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
+
+  const startConversationHandler = () => {
+    startTransition(() => {
+      createConversation(row?.original?.id).then((res) => {
+        if (res.success) {
+          router.push(`/conversations?conversation=${res?.conversation?.id}`);
+        } else {
+          toast.error(res.error as string);
+        }
+      });
+    });
+  };
   // const task = UserTableSchema.parse(row.original);
 
   return (
@@ -44,13 +61,15 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Send Message</DropdownMenuItem>
+        <DropdownMenuItem onClick={startConversationHandler}>
+          Trimite un mesaj
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => router.push(`/profile/${row?.original?.email}`)}
         >
           Vezi profilul
         </DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
+        {/* <DropdownMenuItem>Favorite</DropdownMenuItem>
         <DropdownMenuSeparator />
         {/* <DropdownMenuSub>
           <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
@@ -64,7 +83,7 @@ export function DataTableRowActions<TData>({
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub> */}
-        <DropdownMenuSeparator />
+        {/* <DropdownMenuSeparator />  */}
         <DropdownMenuItem>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>

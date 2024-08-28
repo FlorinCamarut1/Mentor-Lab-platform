@@ -11,6 +11,13 @@ export const GET = async (
     return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
   }
   const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return NextResponse.json(
+      { error: "Trebuie să fiți autentificat!" },
+      { status: 401 },
+    );
+  }
   try {
     await db.joinRequest.deleteMany({
       where: {

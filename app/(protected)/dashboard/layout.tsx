@@ -12,7 +12,7 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
 
   if (session?.user?.role === "ADMIN")
     return (
-      <div className="m-auto min-h-screen max-w-[1200px] p-2">
+      <>
         <Header title="Bun venit la pagina Admin Dashboard" />
         <div className="flex gap-4">
           <div className="flex-1">{children}</div>
@@ -20,14 +20,14 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
             <InviteCodeBar />
           </div>
         </div>
-      </div>
+      </>
     );
 
   return (
-    <div className="m-auto min-h-screen max-w-[1200px] p-2">
+    <>
       <Header title="Bun venit la pagina Dashboard" />
       {children}
-    </div>
+    </>
   );
 };
 

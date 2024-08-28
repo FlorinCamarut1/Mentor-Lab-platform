@@ -5,16 +5,25 @@ import { getEmbedding } from "@/lib/openai";
 import { cvIndex } from "@/lib/pinecone";
 
 import db from "@/lib/db";
+import { getCurrentUser } from "@/actions/getCurrentUser";
 
 export const POST = async (req: Request) => {
   if (req.method !== "POST") {
     return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
   }
 
-  const session = await auth();
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return NextResponse.json(
+      { error: "Nu sunteți autentificat!" },
+      { status: 401 },
+    );
+  }
+
   const existingUser = await db.user.findUnique({
     where: {
-      id: session?.user?.id,
+      id: currentUser?.id,
     },
     include: {
       CV: true,

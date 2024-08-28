@@ -31,7 +31,7 @@ const MyMentorPage = () => {
   }
 
   return (
-    <div className="m-auto max-w-[1200px]">
+    <>
       <Header
         title="Mentorul tău"
         subtitle="Crează o licență de neuitat alături de mentorul tău"
@@ -118,7 +118,7 @@ const MyMentorPage = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 };
 
