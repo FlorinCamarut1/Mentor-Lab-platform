@@ -3,17 +3,16 @@
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useEffect, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { User } from "@prisma/client";
 import { useConversationById } from "@/hooks/conversation/useConversationById";
 import { pusherClient } from "@/lib/pusher";
 import { useMyConversations } from "@/hooks/conversation/useMyConversations";
+import { ScrollArea } from "../ui/scroll-area";
 
-import useConversationStore from "@/store/conversationStore";
 import Message from "./Message";
 
 import SendMessageForm from "./SendMessageForm";
-import { ScrollArea } from "../ui/scroll-area";
 
 interface ConversationContainerProps {
   currentUser: User;
@@ -22,9 +21,7 @@ interface ConversationContainerProps {
 const ConversationContainer = ({ currentUser }: ConversationContainerProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const router = useRouter();
   const conversationId = useSearchParams().get("conversation") as string;
-  const conversationStore = useConversationStore();
 
   const { data: currentConversationData, mutate: mutateCurrentConversation } =
     useConversationById(conversationId);
@@ -65,7 +62,7 @@ const ConversationContainer = ({ currentUser }: ConversationContainerProps) => {
     );
 
   return (
-    <div className="flex w-full flex-col overflow-hidden rounded-md border-[1px] lg:max-h-[600px]">
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-md border-[1px]">
       {/* Main message container */}
       <div className="flex items-center gap-2 bg-gray-100 p-2 shadow-sm">
         <Avatar>
@@ -81,7 +78,7 @@ const ConversationContainer = ({ currentUser }: ConversationContainerProps) => {
         <h3>{currentConversationData?.users?.[0].name}</h3>
       </div>
 
-      <ScrollArea>
+      <ScrollArea className="h-full">
         <div className="flex flex-col gap-2 p-2" ref={scrollRef}>
           {currentConversationData?.messages?.map((message) => (
             <Message

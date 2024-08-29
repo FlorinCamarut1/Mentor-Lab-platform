@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 
 import React, { useEffect } from "react";
 import ConversationBarItem from "./ConversationBarItem";
+import { ScrollArea } from "../ui/scroll-area";
 
 const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
   const { data: allConversationsData, mutate: mutateConversations } =
@@ -24,8 +25,8 @@ const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
   });
 
   return (
-    <div className="h-full w-full rounded-md border scrollbar scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full lg:max-h-[600px] lg:min-h-[600px] lg:w-96">
-      <div className="m-4 flex flex-col gap-2">
+    <ScrollArea className="h-full w-full rounded-md border p-4">
+      <div className="flex flex-col gap-2">
         {allConversationsData?.map(
           (
             conversation: Conversation & {
@@ -40,7 +41,7 @@ const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
           ),
         )}
       </div>
-    </div>
+    </ScrollArea>
   );
 };
 

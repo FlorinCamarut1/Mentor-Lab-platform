@@ -16,18 +16,20 @@ const MobileConversationContainer = ({
   if (!conversationStore.mobileConversationBoxOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex flex-col overflow-hidden bg-white lg:hidden">
-      <div
-        className="flex w-full cursor-pointer items-center gap-2 p-2 lg:hidden"
-        onClick={() => {
-          conversationStore.setMobileConversationBoxOpen(false);
-          router.push("/conversations");
-        }}
-      >
-        <IoMdArrowRoundBack size={30} />
-        <p className="font-semibold text-gray-500">Înapoi la conversații</p>
+    <div className="lg:hidden">
+      <div className="fixed inset-0 flex flex-col overflow-hidden bg-white">
+        <div
+          className="flex w-full cursor-pointer items-center gap-2 p-2"
+          onClick={() => {
+            conversationStore.setMobileConversationBoxOpen(false);
+            router.push("/conversations");
+          }}
+        >
+          <IoMdArrowRoundBack size={30} />
+          <p className="font-semibold text-gray-500">Înapoi la conversații</p>
+        </div>
+        <ConversationContainer currentUser={currentUser} />
       </div>
-      <ConversationContainer currentUser={currentUser} />
     </div>
   );
 };
