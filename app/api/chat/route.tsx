@@ -49,10 +49,12 @@ export const POST = async (req: Request) => {
       const matchingTeacher = teacherAviability.find(
         (teacher) => teacher.teacherId === cv.userId,
       );
-      return { ...cv, ...matchingTeacher };
+      return {
+        ...cv,
+        maxNumberOfStudents: matchingTeacher?.maxNumberOfStudents || 0,
+        currentNumberOfStudents: matchingTeacher?.currentNumberOfStudents || 0,
+      };
     });
-
-    console.log(newRelevantCvData);
 
     const systemMessage: CoreMessage = {
       role: "system" as any,
