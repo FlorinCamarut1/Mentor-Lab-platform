@@ -21,7 +21,7 @@ export const toggleTeacherDisponibility = async (
     if (existingAviability[0]) {
       await db.teacherAcceptedStudents.updateMany({
         where: {
-          teacherId: currentUser.id,
+          teacherId: currentUser?.id,
         },
         data: {
           maxNumberOfStudents: maxNumberOfStudents,

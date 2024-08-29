@@ -3,11 +3,10 @@
 import { useMyConversations } from "@/hooks/conversation/useMyConversations";
 import { Conversation, Message, User } from "@prisma/client";
 import { pusherClient } from "@/lib/pusher";
-import { useSession } from "next-auth/react";
+import { ScrollArea } from "../ui/scroll-area";
 
 import React, { useEffect } from "react";
 import ConversationBarItem from "./ConversationBarItem";
-import { ScrollArea } from "../ui/scroll-area";
 
 const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
   const { data: allConversationsData, mutate: mutateConversations } =

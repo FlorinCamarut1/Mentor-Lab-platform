@@ -5,7 +5,7 @@ import db from "@/lib/db";
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { teacherId: string } },
+  { params }: { params: { id: string } },
 ) => {
   if (request.method !== "GET") {
     return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
@@ -21,7 +21,7 @@ export const GET = async (
   try {
     const teacherAcceptedStudents = await db.teacherAcceptedStudents.findMany({
       where: {
-        teacherId: params.teacherId,
+        teacherId: params.id,
       },
       include: {
         students: {
