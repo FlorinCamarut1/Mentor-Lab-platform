@@ -18,6 +18,7 @@ import { Linkedin, Mail, Phone } from "lucide-react";
 import { useMyProjectData } from "@/hooks/useMyProjectData";
 import { format } from "date-fns";
 import { MenuItem } from "@/components/team/TeamMembersContainer";
+import { Suspense } from "react";
 
 import Link from "next/link";
 import Loading from "@/app/loading";
@@ -26,12 +27,10 @@ const MyMentorPage = () => {
   const { data: myMentorData } = useMyMentorData();
   const { data: myProjectData } = useMyProjectData();
 
-  if (!myMentorData || !myProjectData) {
-    return <Loading />;
-  }
+  if (!myMentorData || !myProjectData) return <Loading />;
 
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <Header
         title="Mentorul tău"
         subtitle="Crează o licență de neuitat alături de mentorul tău"
@@ -118,7 +117,7 @@ const MyMentorPage = () => {
           </CardContent>
         </Card>
       </div>
-    </>
+    </Suspense>
   );
 };
 

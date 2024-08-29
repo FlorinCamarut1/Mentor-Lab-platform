@@ -37,15 +37,32 @@ export const POST = async (req: Request) => {
       },
     });
 
+    const teacherAviability = await db.teacherAcceptedStudents.findMany({
+      where: {
+        teacherId: {
+          in: relevantCVs.map((cv) => cv.userId),
+        },
+      },
+    });
+
+    const newRelevantCvData = relevantCVs.map((cv) => {
+      const matchingTeacher = teacherAviability.find(
+        (teacher) => teacher.teacherId === cv.userId,
+      );
+      return { ...cv, ...matchingTeacher };
+    });
+
+    console.log(newRelevantCvData);
+
     const systemMessage: CoreMessage = {
       role: "system" as any,
       content:
-        "Ești un bot assistent pentru aplicația Mentor Lab, te numești Mentor-Lab-Bot, tu vei ajuta studenții care te întreabă despre profesori folosindu-te de informațiile existente, ordonează un pic logic datele pe care le primești când răspunzi și oferă sugestii de profesori care s-ar potrivi conform experientei cu cererea studentului, trimite linkul către profilul profesorului doar dacă ți se cere asta " +
+        "Ești un bot assistent pentru aplicația Mentor Lab, te numești Mentor-Lab-Bot, tu vei ajuta studenții care te întreabă despre profesori folosindu-te de informațiile existente, oferă sugestii de profesori care s-ar potrivi conform experientei cu cererea studentului, trimite linkul către profilul profesorului doar dacă ți se cere asta " +
         "Informațiile relevante din această aplicație sunt: \n" +
-        relevantCVs
+        newRelevantCvData
           .map(
             (cv) =>
-              `Titlu: ${cv.title}\n\nConținut:\n ${cv.content}\n\nLink profil:\n<Link href="${cv.profileUrl}"/>`,
+              `Titlu: ${cv.title}\n\nConținut:\n ${cv.content}\n\nLink profil:\n<Link href="${cv.profileUrl}"/>\n\n Locuri disponibile:${cv?.maxNumberOfStudents - cv?.currentNumberOfStudents || "Profesorul nu este disponibil către mentorat momentan"}`,
           )
           .join("\n\n"),
     };
