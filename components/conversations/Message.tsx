@@ -37,7 +37,7 @@ const Message = ({ messageData, currentUser, receiver }: MessageProps) => {
       </Avatar>
       <div
         className={cn(
-          "w-fit overflow-hidden rounded-sm bg-gray-100 p-2",
+          "w-fit overflow-hidden rounded-xl bg-gray-100 p-2",
           isSenderMessage ? "bg-primary text-white" : "bg-gray-200 text-black",
         )}
       >
