@@ -17,10 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
 import { toast } from "react-hot-toast";
-import React, { Suspense, useState, useTransition } from "react";
+import React, { useTransition } from "react";
 import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
-import Loading from "@/app/loading";
 
 const LoginForm = () => {
   const callbackUrl = useSearchParams().get("callbackUrl");

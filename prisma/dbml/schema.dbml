@@ -1,0 +1,147 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table CV {
+  id String [pk]
+  title String [not null]
+  content String
+  pdfHostedUrl String [not null]
+  userId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profileUrl String [not null]
+  user User [not null]
+}
+
+Table accounts {
+  id String [pk]
+  userId String [not null]
+  type String [not null]
+  provider String [not null]
+  providerAccountId String [not null]
+  refresh_token String
+  access_token String
+  expires_at Int
+  token_type String
+  scope String
+  id_token String
+  session_state String
+  user User [not null]
+
+  indexes {
+    (provider, providerAccountId) [unique]
+  }
+}
+
+Table User {
+  id String [pk]
+  name String
+  email String [unique]
+  image String
+  password String
+  phoneNumber String
+  gitHubUrl String
+  facebookUrl String
+  linkedlnUrl String
+  role UserRole [not null, default: 'STUDENT']
+  accounts accounts [not null]
+  CV CV [not null]
+  AcceptedStudent AcceptedStudent
+  conversationIds String[] [not null]
+  conversations Conversation [not null]
+  seenMessageIds String[] [not null]
+  seenMessages Message [not null]
+  messages Message [not null]
+}
+
+Table verificationtokens {
+  id String [pk]
+  token String [not null]
+  expires DateTime [not null]
+
+  indexes {
+    (id, token) [unique]
+  }
+}
+
+Table JoinRequest {
+  id String [pk]
+  studentId String [not null]
+  status String [not null, default: 'PENDING']
+  teacherId String [not null]
+  expires DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  projectName String [not null]
+  projectDescription String [not null]
+}
+
+Table TeacherAcceptedStudents {
+  id String [pk]
+  teacherId String [not null]
+  currentNumberOfStudents Int [not null, default: 0]
+  maxNumberOfStudents Int [not null, default: 3]
+  students AcceptedStudent [not null]
+}
+
+Table AcceptedStudent {
+  id String [pk]
+  teamId String [not null]
+  teacherId String [not null]
+  studentId String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  projectName String [not null]
+  projectDescription String [not null]
+  student TeacherAcceptedStudents [not null]
+  studentData User [not null]
+}
+
+Table Conversation {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  lastMessageAt DateTime [default: `now()`, not null]
+  name String
+  messagesIds String[] [not null]
+  messages Message [not null]
+  userIds String[] [not null]
+  users User [not null]
+}
+
+Table Message {
+  id String [pk]
+  body String
+  image String
+  createdAt DateTime [default: `now()`, not null]
+  seenIds String[] [not null]
+  seen User [not null]
+  conversationId String [not null]
+  conversation Conversation [not null]
+  senderId String [not null]
+  sender User [not null]
+}
+
+Enum UserRole {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+Ref: CV.userId > User.id [delete: Cascade]
+
+Ref: accounts.userId > User.id [delete: Cascade]
+
+Ref: User.conversationIds > Conversation.id
+
+Ref: User.seenMessageIds > Message.id
+
+Ref: AcceptedStudent.teamId > TeacherAcceptedStudents.id [delete: Cascade]
+
+Ref: AcceptedStudent.studentId - User.id [delete: Cascade]
+
+Ref: Conversation.userIds > User.id
+
+Ref: Message.seenIds > User.id
+
+Ref: Message.conversationId > Conversation.id [delete: Cascade]
+
+Ref: Message.senderId > User.id
