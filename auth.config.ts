@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { CV, UserRole } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import { getUserByEmail, getUserById } from "@/lib/dbUtils";
 import { LoginSchema } from "@/schemas";
 import type { NextAuthConfig } from "next-auth";

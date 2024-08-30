@@ -12,7 +12,7 @@ const AuthWrapper = ({
 }) => {
   return (
     <Suspense fallback={<Loading />}>
-      <div className="flex h-full w-full items-center justify-center p-2 md:justify-normal md:p-20">
+      <div className="flex h-screen w-full items-center justify-center p-2 md:justify-normal md:p-20">
         <div className="flex h-full w-full flex-col gap-4 rounded-xl px-4 py-10 shadow-2xl md:h-auto md:w-[25rem]">
           <AuthHeader isOnLogin={isOnLogin} />
           {children}
