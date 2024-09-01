@@ -6,6 +6,7 @@ import { Conversation, Message, User } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import useConversationStore from "@/store/conversationStore";
+import { Skeleton } from "../ui/skeleton";
 interface ConversationBarItemProps {
   conversation: Conversation & { users: User[]; messages: Message[] };
 }
@@ -43,6 +44,17 @@ const ConversationBarItem = ({ conversation }: ConversationBarItemProps) => {
       !conversationStore.mobileConversationBoxOpen,
     );
   };
+
+  if (!conversation)
+    return (
+      <div className="flex items-center space-x-4">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
+    );
 
   return (
     <div
