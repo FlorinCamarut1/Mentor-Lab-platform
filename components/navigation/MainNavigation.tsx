@@ -20,6 +20,7 @@ import { useState } from "react";
 import MobileInviteCodeDrawer from "../admin/Invitations/MobileInviteCodeDrawer";
 import AiChatButton from "../openAiChat/AiChatButton";
 import { NavLinksTypes } from "@/types";
+import NotificationBell from "./NotificationBell";
 
 interface MainNavigationProps {
   currentUserData: User | null;
@@ -149,15 +150,18 @@ export default function MainNavigation({
           />
         )}
         {currentUserData && (
-          <Button
-            className="hidden lg:block"
-            variant="outline"
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Deconectare
-          </Button>
+          <div className="flex items-center justify-center">
+            <NotificationBell currentUserData={currentUserData} />
+            <Button
+              className="hidden lg:block"
+              variant="outline"
+              onClick={() => {
+                signOut();
+              }}
+            >
+              Deconectare
+            </Button>
+          </div>
         )}
       </div>
       {currentUserData && (

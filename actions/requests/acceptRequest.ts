@@ -2,6 +2,7 @@
 
 import db from "@/lib/db";
 import { getCurrentUser } from "../getCurrentUser";
+import { pusherServer } from "@/lib/pusher";
 
 export const acceptRequest = async (requestId: string) => {
   const currentUser = await getCurrentUser();
@@ -64,7 +65,7 @@ export const acceptRequest = async (requestId: string) => {
       },
     });
 
-    await db.joinRequest.update({
+    const updatedRequest = await db.joinRequest.update({
       where: {
         id: request.id,
       },
@@ -72,7 +73,24 @@ export const acceptRequest = async (requestId: string) => {
         status: "ACCEPTED",
       },
     });
-    return { success: "Studentul a fost acceptat!" };
+    await db.notification.create({
+      data: {
+        notifyeeId: request.studentId,
+        body: request.projectName,
+        notificationType: "REQUEST_ACCEPTED",
+        notificatorId: currentUser.id,
+        notificatorUsername: currentUser.name,
+        targetId: request.id,
+      },
+    });
+
+    await pusherServer.trigger(
+      request.studentId,
+      "notification:new",
+      updatedRequest,
+    );
+
+    return { success: "Studentul a fost acceptat!", updatedRequest };
   } catch (error) {
     return { error: "Ceva nu a mers bine!" };
   }

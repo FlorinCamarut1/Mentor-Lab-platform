@@ -10,8 +10,8 @@ export const PROTECTED_ROUTES = [
   "/profile",
   "/requests",
   "/team",
+  "/mentors",
+  "/conversations",
 ];
 
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
-
-export const ADMIN_ROUTES = ["/admin"];

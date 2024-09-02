@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 
-import { ADMIN_ROUTES, AUTH_ROUTES, PROTECTED_ROUTES } from "./routes";
+import { AUTH_ROUTES, PROTECTED_ROUTES } from "./routes";
 
 export const { auth } = NextAuth(authConfig);
 
@@ -14,9 +14,6 @@ export default auth((req) => {
     nextUrl.pathname.startsWith(path),
   );
   const isAuthRoute = AUTH_ROUTES.some((path) =>
-    nextUrl.pathname.startsWith(path),
-  );
-  const isAdminRoute = ADMIN_ROUTES.some((path) =>
     nextUrl.pathname.startsWith(path),
   );
 
@@ -39,12 +36,8 @@ export default auth((req) => {
    */
   if (isLoggedIn && isAuthRoute) {
     return Response.redirect(
-      new URL(`/landing?callbackUrl=${encodedCallbackUrl}`, nextUrl),
+      new URL(`/dashboard?callbackUrl=${encodedCallbackUrl}`, nextUrl),
     );
-  }
-
-  if (isAdminRoute && !isAdmin) {
-    return Response.redirect(new URL(`/not-found`, nextUrl));
   }
 });
 

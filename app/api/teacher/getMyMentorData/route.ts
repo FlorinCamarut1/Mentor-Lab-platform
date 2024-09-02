@@ -26,6 +26,7 @@ export const GET = async (req: NextRequest) => {
         AcceptedStudent: true,
       },
     });
+
     const currentStudentTeacher = await db.user.findUnique({
       where: {
         id: currentAcceptedStudent?.AcceptedStudent?.teacherId,
