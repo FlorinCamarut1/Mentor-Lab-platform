@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useState, useEffect, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,47 +18,66 @@ import { Input } from "@/components/ui/input";
 import { EditAccountSchema, RegisterSchema } from "@/schemas";
 import { register } from "@/actions/register";
 import { toast } from "react-hot-toast";
-import { useTransition } from "react";
 import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
 import { editAccountInfo } from "@/actions/editAccountInfo";
-import { User } from "@prisma/client";
+import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 
 interface RegisterFormProps {
   isEditing?: boolean;
-  currentUserData?: User;
 }
 
-const RegisterForm = ({
-  isEditing = false,
-  currentUserData,
-}: RegisterFormProps) => {
+const RegisterForm = ({ isEditing = false }: RegisterFormProps) => {
+  const { data: currentUserData, mutate: mutateCurrentUserData } =
+    useCurrentUserData();
+
   const [isPending, startTransition] = useTransition();
   const inviteToken = useSearchParams().get("inviteToken");
   const registerOrEditSchema = z.union([RegisterSchema, EditAccountSchema]);
 
-  const defaultValues = isEditing
-    ? {
-        email: (currentUserData?.email as string) || "",
-        name: (currentUserData?.name as string) || "",
+  const [defaultValues, setDefaultValues] = useState(() => {
+    if (isEditing) {
+      return {
+        email: "",
+        name: "",
         oldPassword: "",
         newPassword: "",
-        phoneNumber: currentUserData?.phoneNumber ?? "",
-        gitHubUrl: currentUserData?.gitHubUrl ?? "",
-        facebookUrl: currentUserData?.facebookUrl ?? "",
-        linkedlnUrl: currentUserData?.linkedlnUrl ?? "",
-      }
-    : {
+        phoneNumber: "",
+        gitHubUrl: "",
+        facebookUrl: "",
+        linkedlnUrl: "",
+      };
+    } else {
+      return {
         email: "",
         password: "",
         name: "",
         confirmPassword: "",
       };
+    }
+  });
 
   const form = useForm<z.infer<typeof registerOrEditSchema>>({
     resolver: zodResolver(registerOrEditSchema),
     defaultValues: defaultValues,
   });
+
+  useEffect(() => {
+    if (currentUserData && isEditing) {
+      const updatedValues = {
+        name: currentUserData?.name || "",
+        email: currentUserData?.email || "",
+        phoneNumber: currentUserData?.phoneNumber || "",
+        gitHubUrl: currentUserData?.gitHubUrl || "",
+        facebookUrl: currentUserData?.facebookUrl || "",
+        linkedlnUrl: currentUserData?.linkedlnUrl || "",
+        oldPassword: "",
+        newPassword: "",
+      };
+      setDefaultValues(updatedValues);
+      form.reset(updatedValues);
+    }
+  }, [currentUserData, isEditing, form]);
 
   const onSubmit = (
     values: z.infer<typeof RegisterSchema> | z.infer<typeof EditAccountSchema>,
@@ -85,6 +105,7 @@ const RegisterForm = ({
         editAccountInfo(editValues).then((res) => {
           if (res?.success) {
             toast.success(res.success as string);
+            mutateCurrentUserData();
           } else {
             toast.error(res?.error as string);
           }

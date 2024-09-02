@@ -1,18 +1,16 @@
 "use client";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { JoinRequest, User } from "@prisma/client";
-
+import { JoinRequest } from "@prisma/client";
+import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 import React, { Suspense } from "react";
+
 import JoinTeacherBox from "./JoinTeacherBox";
 import TeacherDisponibility from "./TeacherDisponibility";
 import useReqByUserId from "@/hooks/joinTeacherRequest/useReqByUserId";
 import Loading from "@/app/loading";
 
-interface RequestsContainerProps {
-  currentUserData: User | null;
-}
-
-const RequestsContainer = ({ currentUserData }: RequestsContainerProps) => {
+const RequestsContainer = () => {
+  const { data: currentUserData } = useCurrentUserData();
   const { data: requestsData, mutate: mutateRequests } = useReqByUserId(
     currentUserData?.id as string,
   );

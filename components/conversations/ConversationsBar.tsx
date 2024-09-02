@@ -22,6 +22,12 @@ const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
       pusherClient.unbind("conversation:new");
     };
   });
+  if (allConversationsData.length === 0)
+    return (
+      <h2 className="text-center text-xl text-gray-500">
+        Nu există conversații!
+      </h2>
+    );
 
   return (
     <ScrollArea className="h-full w-full rounded-md border p-4">

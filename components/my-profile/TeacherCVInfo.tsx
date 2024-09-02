@@ -4,6 +4,7 @@ import { FaFilePdf } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 
 import Loading from "@/app/loading";
 import useCvByTeacherId from "@/hooks/CV/useCvByTeacherId";
@@ -13,10 +14,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import AlertDeleteDialog from "../common/AlertDeleteDialog";
 
-interface TeacherCVInfoProps {
-  currentUserData: User & { pdfHostedUrl?: string };
-}
-const TeacherCVInfo = ({ currentUserData }: TeacherCVInfoProps) => {
+const TeacherCVInfo = () => {
+  const { data: currentUserData, mutate: mutateCurrentUserData } =
+    useCurrentUserData();
   const { data: CvUserData, mutate: mutateCV } = useCvByTeacherId(
     currentUserData?.id as string,
   );

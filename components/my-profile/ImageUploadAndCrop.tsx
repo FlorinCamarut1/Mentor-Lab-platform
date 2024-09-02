@@ -9,7 +9,7 @@ import { Slider } from "../ui/slider";
 import { FaRegEdit } from "react-icons/fa";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
+import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 
 import axios from "axios";
 import Cropper from "react-easy-crop";
@@ -18,11 +18,10 @@ import useImageUploadAndCropStore from "@/store/imageUploadAndCropStore";
 import toast from "react-hot-toast";
 import Loading from "@/app/loading";
 
-interface ImageUploadAndCropProps {
-  currentUserData: User | null;
-}
+const ImageUploadAndCrop = () => {
+  const { data: currentUserData, mutate: mutateCurrentUserData } =
+    useCurrentUserData();
 
-const ImageUploadAndCrop = ({ currentUserData }: ImageUploadAndCropProps) => {
   const router = useRouter();
 
   const imageUploadStore = useImageUploadAndCropStore();
@@ -65,6 +64,7 @@ const ImageUploadAndCrop = ({ currentUserData }: ImageUploadAndCropProps) => {
         if (res.status === 200) {
           toast.success("Imagine încărcată cu succes!");
           imageUploadStore.reset();
+          mutateCurrentUserData();
           router.refresh();
         }
       })
