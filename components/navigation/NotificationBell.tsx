@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { useNotifications } from "@/hooks/notification/useNotifications";
 import { Notification, User } from "@prisma/client";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, useRef } from "react";
 import { pusherClient } from "@/lib/pusher";
 import { ScrollArea } from "../ui/scroll-area";
 import { deleteAllMyNotifications } from "@/actions/notifications/deleteAllMyNotifications";
@@ -20,6 +20,7 @@ const NotificationBell = ({ currentUserData }: NotificationBellProps) => {
   const [isPending, startTransition] = useTransition();
   const { data: notificationsData, mutate: mutateNotifications } =
     useNotifications();
+  const lastNotificationCountRef = useRef(0);
 
   const deleteAllNotifications = () => {
     startTransition(() => {
@@ -36,12 +37,23 @@ const NotificationBell = ({ currentUserData }: NotificationBellProps) => {
         setNewNotification(true);
       });
 
+      // Check for new notifications
+      if (
+        notificationsData &&
+        notificationsData.length > lastNotificationCountRef.current
+      ) {
+        setNewNotification(true);
+      }
+
+      // Update the last notification count
+      lastNotificationCountRef.current = notificationsData?.length || 0;
+
       return () => {
         pusherClient?.unsubscribe(currentUserData?.id);
         pusherClient?.unbind("notification:new");
       };
     }
-  }, [currentUserData?.id, mutateNotifications]);
+  }, [currentUserData?.id, mutateNotifications, notificationsData]);
 
   return (
     <Popover>
