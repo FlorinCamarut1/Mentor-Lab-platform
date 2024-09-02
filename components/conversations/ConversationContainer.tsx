@@ -80,8 +80,11 @@ const ConversationContainer = ({ currentUser }: ConversationContainerProps) => {
 
       <ScrollArea className="h-full">
         <div className="flex flex-col gap-2 p-2" ref={scrollRef}>
-          {currentConversationData?.messages?.map((message) => (
+          {currentConversationData?.messages?.map((message, index) => (
             <Message
+              isLastMessage={
+                currentConversationData?.messages.length === index + 1
+              }
               key={message.id}
               messageData={message}
               currentUser={currentUser}
