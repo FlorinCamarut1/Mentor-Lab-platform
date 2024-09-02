@@ -29,7 +29,7 @@ const NotificationBox = ({
           title={`${notificationData?.notificatorUsername} a trimis un mesaj.`}
           body={notificationData?.body}
           deleteOneFn={deleteFunction}
-          redirectUrl={`/profile/${notificationData?.notificatorUsername}`}
+          redirectUrl={`/conversations?conversation=${notificationData?.targetId}`}
         />
       );
     case "REQUEST":
@@ -86,19 +86,13 @@ const NotificationLayout = ({
   return (
     <div
       className="flex cursor-pointer flex-col gap-2 rounded-md border p-2 text-sm shadow-sm"
-      onClick={() => router.push(redirectUrl)}
+      onClick={() => {
+        router.push(redirectUrl);
+        deleteOneFn();
+      }}
     >
       <div className="flex justify-between">
         <p className="font-semibold">{title}</p>
-
-        <IoCloseCircleOutline
-          size={20}
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            deleteOneFn();
-          }}
-        />
       </div>
       <div className="flex gap-2">
         <Icon size={20} />
