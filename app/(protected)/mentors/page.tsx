@@ -27,7 +27,7 @@ const MyMentorPage = () => {
   const { data: myMentorData } = useMyMentorData();
   const { data: myProjectData } = useMyProjectData();
 
-  if (!myMentorData || !myProjectData)
+  if (myMentorData?.length === 0 || !myProjectData)
     return (
       <h1 className="text-center text-3xl text-gray-500">
         Nu te-ai înscris la un mentor momentan.

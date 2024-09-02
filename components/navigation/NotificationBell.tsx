@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { useNotifications } from "@/hooks/notification/useNotifications";
 import { Notification, User } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { pusherClient } from "@/lib/pusher";
 import { ScrollArea } from "../ui/scroll-area";
 import { deleteAllMyNotifications } from "@/actions/notifications/deleteAllMyNotifications";
@@ -17,8 +17,16 @@ interface NotificationBellProps {
 
 const NotificationBell = ({ currentUserData }: NotificationBellProps) => {
   const [newNotification, setNewNotification] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const { data: notificationsData, mutate: mutateNotifications } =
     useNotifications();
+
+  const deleteAllNotifications = () => {
+    startTransition(() => {
+      deleteAllMyNotifications();
+      mutateNotifications();
+    });
+  };
 
   useEffect(() => {
     if (currentUserData?.id) {
@@ -70,10 +78,9 @@ const NotificationBell = ({ currentUserData }: NotificationBellProps) => {
         <div className="flex items-center justify-center p-2">
           <Button
             onClick={(e) => {
-              e.stopPropagation();
               e.preventDefault();
-              deleteAllMyNotifications();
-              mutateNotifications();
+              e.stopPropagation();
+              deleteAllNotifications();
             }}
           >
             Șterge toate notificările

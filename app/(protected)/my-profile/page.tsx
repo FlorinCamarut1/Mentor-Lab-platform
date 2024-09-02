@@ -21,6 +21,7 @@ const MyProfilePage = () => {
         <Suspense fallback={<Loading />}>
           <RegisterForm isEditing={true} />
         </Suspense>
+
         <div className="flex flex-col gap-4">
           <Suspense fallback={<SkeletonCard />}>
             <ImageUploadAndCrop />

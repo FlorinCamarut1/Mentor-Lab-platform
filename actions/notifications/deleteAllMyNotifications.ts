@@ -1,6 +1,6 @@
 "use server";
-
 import { getCurrentUser } from "../getCurrentUser";
+
 import db from "@/lib/db";
 
 export const deleteAllMyNotifications = async () => {
