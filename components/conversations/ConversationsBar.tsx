@@ -22,7 +22,7 @@ const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
       pusherClient.unbind("conversation:new");
     };
   });
-  if (allConversationsData.length === 0)
+  if (allConversationsData?.length === 0)
     return (
       <h2 className="text-center text-xl text-gray-500">
         Nu există conversații!
@@ -31,7 +31,7 @@ const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
 
   return (
     <ScrollArea className="h-full w-full rounded-md border p-4">
-      <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-1 gap-2">
         {allConversationsData?.map(
           (
             conversation: Conversation & {

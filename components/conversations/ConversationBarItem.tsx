@@ -45,17 +45,6 @@ const ConversationBarItem = ({ conversation }: ConversationBarItemProps) => {
     );
   };
 
-  if (!conversation)
-    return (
-      <div className="flex items-center space-x-4">
-        <Skeleton className="h-12 w-12 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
-      </div>
-    );
-
   return (
     <div
       className="flex w-full cursor-pointer gap-2 rounded-md border p-2 transition hover:bg-gray-100"
