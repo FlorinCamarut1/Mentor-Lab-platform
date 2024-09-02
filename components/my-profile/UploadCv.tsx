@@ -75,7 +75,7 @@ const UploadCv = ({ currentUserData }: { currentUserData: User | null }) => {
           size="sm"
           className="rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
         >
-          Upload
+          Încarcă CV
         </Button>
       </div>
     </div>

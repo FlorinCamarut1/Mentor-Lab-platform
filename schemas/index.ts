@@ -9,10 +9,10 @@ const facebookRegex = /^https:\/\/(www\.)?facebook\.com\/[A-Za-z0-9_-]+\/?$/;
 
 export const RegisterSchema = z
   .object({
-    email: z.string().email(),
+    email: z.string().email({ message: "Email invalid!" }),
     password: z
       .string()
-      .min(8, { message: "Parola trebuie să aibă cel puțin 8 caractere" })
+      .min(8, { message: "Parola trebuie să conțină cel puțin 8 caractere" })
       .refine((password) => password.match(/\d/), {
         message: "Parola trebuie să conțină cel puțin o cifră",
       })
