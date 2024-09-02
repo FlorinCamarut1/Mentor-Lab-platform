@@ -131,7 +131,7 @@ export const MenuItem = ({
   return (
     <div className="flex items-center gap-1">
       <span className="text-nowrap font-semibold text-black">{rowTitle}:</span>{" "}
-      <p className="overflow-hidden overflow-ellipsis text-lg text-gray-600">
+      <p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-lg text-gray-600">
         {rowValue}
       </p>
     </div>

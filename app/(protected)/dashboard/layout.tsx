@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import Loading from "@/app/loading";
 import InviteCodeBar from "@/components/admin/Invitations/InviteCodeBar";
 import Header from "@/components/common/Header";
+import SmallSkeleton from "@/components/common/skeletons/SmallSkeleton";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -14,22 +15,26 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
 
   if (session?.user?.role === "ADMIN")
     return (
-      <Suspense fallback={<Loading />}>
+      <>
         <Header title="Bun venit la pagina Admin Dashboard" />
         <div className="flex gap-4">
-          <div className="flex-1">{children}</div>
+          <div className="flex-1">
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </div>
           <div className="grow-0">
-            <InviteCodeBar />
+            <Suspense fallback={<SmallSkeleton />}>
+              <InviteCodeBar />
+            </Suspense>
           </div>
         </div>
-      </Suspense>
+      </>
     );
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <Header title="Bun venit la pagina Dashboard" />
-      {children}
-    </Suspense>
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+    </>
   );
 };
 
