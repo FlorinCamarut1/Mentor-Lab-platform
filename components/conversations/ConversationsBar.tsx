@@ -4,15 +4,18 @@ import { useMyConversations } from "@/hooks/conversation/useMyConversations";
 import { Conversation, Message, User } from "@prisma/client";
 import { pusherClient } from "@/lib/pusher";
 import { ScrollArea } from "../ui/scroll-area";
-
+import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 import React, { useEffect } from "react";
+
 import ConversationBarItem from "./ConversationBarItem";
 
-const ConversationsBar = ({ currentUser }: { currentUser: User }) => {
+const ConversationsBar = () => {
   const { data: allConversationsData, mutate: mutateConversations } =
     useMyConversations();
+  const { data: currentUser } = useCurrentUserData();
 
   useEffect(() => {
+    if (!currentUser) return;
     pusherClient.subscribe(currentUser?.id as string);
     pusherClient.bind("conversation:new", () => {
       mutateConversations();

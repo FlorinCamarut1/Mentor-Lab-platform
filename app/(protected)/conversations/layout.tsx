@@ -1,4 +1,3 @@
-import { getCurrentUser } from "@/actions/getCurrentUser";
 import { Suspense } from "react";
 
 import Loading from "@/app/loading";
@@ -9,14 +8,13 @@ import SmallSkeleton from "@/components/common/skeletons/SmallSkeleton";
 interface ConversationsLayoutProps {
   children: React.ReactNode;
 }
-const ConversationsLayout = async ({ children }: ConversationsLayoutProps) => {
-  const currentUser = await getCurrentUser();
+const ConversationsLayout = ({ children }: ConversationsLayoutProps) => {
   return (
     <>
       <Header title="Conversațiile tale" />
       <div className="grid lg:grid-cols-3 lg:gap-4">
         <Suspense fallback={<SmallSkeleton />}>
-          <ConversationsBar currentUser={currentUser!} />
+          <ConversationsBar />
         </Suspense>
 
         <div className="lg:col-span-2">

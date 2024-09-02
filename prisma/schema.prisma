@@ -70,6 +70,8 @@ model User {
   seenMessageIds String[]  @db.ObjectId
   seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
 
+  notifications Notification[]
+
   messages Message[]
 }
 
@@ -141,4 +143,17 @@ model Message {
 
   senderId String @db.ObjectId
   sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  body                String
+  notificationType    String
+  notifyeeId          String   @db.ObjectId
+  createdAt           DateTime @default(now())
+  notificatorId       String?
+  notificatorUsername String?
+  targetId            String?
+
+  user User @relation(fields: [notifyeeId], references: [id], onDelete: Cascade)
 }
