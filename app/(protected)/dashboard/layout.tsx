@@ -1,5 +1,7 @@
-import { auth } from "@/auth";
+"use client";
+
 import { Suspense } from "react";
+import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 
 import Loading from "@/app/loading";
 import InviteCodeBar from "@/components/admin/Invitations/InviteCodeBar";
@@ -10,10 +12,10 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
-  const session = await auth();
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  const { data: currentUserData } = useCurrentUserData();
 
-  if (session?.user?.role === "ADMIN")
+  if (currentUserData?.role === "ADMIN")
     return (
       <>
         <Header title="Bun venit la pagina Admin Dashboard" />

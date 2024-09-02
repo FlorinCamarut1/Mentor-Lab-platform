@@ -5,14 +5,16 @@ import { Input } from "../ui/input";
 import { FaFilePdf } from "react-icons/fa6";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { User } from "@prisma/client";
+import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 
 import axios from "axios";
 import toast from "react-hot-toast";
-import Loading from "@/app/loading";
 import useCvByTeacherId from "@/hooks/CV/useCvByTeacherId";
 
-const UploadCv = ({ currentUserData }: { currentUserData: User | null }) => {
+const UploadCv = () => {
+  const { data: currentUserData, mutate: mutateCurrentUserData } =
+    useCurrentUserData();
+
   const [text, setText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,8 +53,6 @@ const UploadCv = ({ currentUserData }: { currentUserData: User | null }) => {
       })
       .finally(() => setIsLoading(false));
   };
-
-  if (isLoading) return <Loading />;
 
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5 rounded-md border-[1px] border-gray-200 p-4 shadow-md">
