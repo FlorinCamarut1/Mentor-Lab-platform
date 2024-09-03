@@ -12,6 +12,8 @@ import {
 } from "../ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import timeElapsedSince from "@/utils/timeElapseSince";
+import { FaFile } from "react-icons/fa";
+import Link from "next/link";
 
 interface MessageProps {
   messageData: MessageType;
@@ -28,6 +30,17 @@ const Message = ({
 }: MessageProps) => {
   const isSenderMessage = currentUser?.id === messageData?.senderId;
   const messageImage = isSenderMessage ? currentUser?.image : receiver?.image;
+  const imageOrFile = messageData?.image
+    ?.split(".com/")
+    .pop()
+    ?.split(".")
+    .pop();
+
+  const isImage =
+    imageOrFile === "jpg" || imageOrFile === "png" || imageOrFile === "jpeg";
+  const isFile =
+    imageOrFile === "pdf" || imageOrFile === "docx" || imageOrFile === "doc";
+
   return (
     <div className="flex flex-col justify-center">
       <div
@@ -52,7 +65,7 @@ const Message = ({
           )}
         >
           <p className="break-words">{messageData?.body}</p>
-          {messageData?.image && (
+          {messageData?.image && isImage && (
             <Dialog>
               <DialogTrigger asChild>
                 <Image
@@ -81,6 +94,15 @@ const Message = ({
                 />
               </DialogContent>
             </Dialog>
+          )}
+
+          {messageData?.image && isFile && (
+            <div className="flex items-center justify-center">
+              <Link href={messageData?.image} target="_blank">
+                <FaFile size={40} />
+              </Link>
+              <span>Fișier atașat</span>
+            </div>
           )}
         </div>
       </div>

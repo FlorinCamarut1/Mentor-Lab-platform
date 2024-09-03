@@ -60,6 +60,7 @@ const SendMessageForm = ({
         .then((res) => {
           if (res) {
             startTransition(() => {
+              mutateCurrentConversation();
               sendMessage(
                 conversationId,
                 values?.message as string,
@@ -69,8 +70,6 @@ const SendMessageForm = ({
                   toast.success(res.success);
                   form.reset();
                   conversationStore.setImage(null);
-
-                  mutateCurrentConversation();
                 } else {
                   toast.error(res?.error as string);
                 }
