@@ -6,7 +6,7 @@ import { Conversation, Message, User } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import useConversationStore from "@/store/conversationStore";
-import { Skeleton } from "../ui/skeleton";
+
 interface ConversationBarItemProps {
   conversation: Conversation & { users: User[]; messages: Message[] };
 }
