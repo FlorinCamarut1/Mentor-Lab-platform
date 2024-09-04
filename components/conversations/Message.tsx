@@ -11,8 +11,9 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import timeElapsedSince from "@/utils/timeElapseSince";
 import { FaFile } from "react-icons/fa";
+
+import timeElapsedSince from "@/utils/timeElapseSince";
 import Link from "next/link";
 
 interface MessageProps {
@@ -90,7 +91,7 @@ const Message = ({
                   priority
                   width={1000}
                   height={1000}
-                  className="max-h-full max-w-full rounded-md object-contain"
+                  className="h-auto w-auto rounded-md object-contain"
                 />
               </DialogContent>
             </Dialog>
