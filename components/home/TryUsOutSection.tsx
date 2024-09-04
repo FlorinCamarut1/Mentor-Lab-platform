@@ -12,8 +12,8 @@ const TryUsOutSection = () => {
             </h2>
             <p className="max-w-[600px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Experimentează puterea potrivirii noastre bazate pe GPT 3.5. Pune
-              o întrebare și vezi cum Mentor-Lab te poate ajuta să găsești
-              mentorul perfect.
+              o întrebare și vezi cum Mentor-Lab Chat-Bot te poate ajuta să
+              găsești mentorul perfect.
             </p>
           </div>
           <div className="rounded-lg bg-white p-6 shadow-lg">

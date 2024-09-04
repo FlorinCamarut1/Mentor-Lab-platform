@@ -11,7 +11,6 @@ import MainNavigation from "@/components/navigation/MainNavigation";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Mentor Lab",
   description: "Găsește mentorul perfect pentru tine!",
 };
 

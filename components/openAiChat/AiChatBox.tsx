@@ -85,8 +85,8 @@ const AiChatBox = ({ open, onClose }: AiChatBotProps) => {
           )}
           {!error && messages.length === 0 && (
             <div className="flex h-full items-center justify-center gap-3">
-              <SiProbot />
-              Pune o întrebare asistentului inteligent 😊
+              <SiProbot size={30} />
+              Cauți un mentor?🤔 Eu te pot îndruma!
             </div>
           )}
         </div>

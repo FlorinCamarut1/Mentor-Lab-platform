@@ -23,7 +23,7 @@ const ConversationBarItem = ({ conversation }: ConversationBarItemProps) => {
     !conversation?.messages?.[0]?.body &&
     conversation?.messages?.[0]?.image
   ) {
-    lastMessageToDisplay = "A trimis o imagine...";
+    lastMessageToDisplay = "A trimis un atașament...";
   } else {
     lastMessageToDisplay = conversation?.messages?.[0]?.body;
   }

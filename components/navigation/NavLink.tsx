@@ -1,9 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import React, { MouseEventHandler } from "react";
 import { NavLinksTypes } from "@/types";
 import { User } from "@prisma/client";
+
+import React, { MouseEventHandler, useEffect } from "react";
 
 import clsx from "clsx";
 import Link from "next/link";
@@ -21,6 +22,14 @@ const NavLink = React.forwardRef<HTMLLinkElement, NavLinkProps>(
     const roleBasedRoutes = navLinkData?.role?.some(
       (role) => currentUserData?.role === role,
     );
+
+    useEffect(() => {
+      if (isActive) {
+        document.title = navLinkData.title;
+      } else {
+        document.title = "Mentor-Lab";
+      }
+    }, [navLinkData.title, isActive]);
 
     if (!currentUserData && navLinkData.protected) return null;
     if (!roleBasedRoutes) return null;
