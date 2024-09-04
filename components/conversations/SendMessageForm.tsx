@@ -95,7 +95,6 @@ const SendMessageForm = ({
                 res.data.fileUrl,
               ).then((res) => {
                 if (res?.success) {
-                  toast.success(res.success);
                   form.reset();
                   conversationStore.setImage(null);
                 } else {
@@ -112,7 +111,6 @@ const SendMessageForm = ({
       startTransition(() => {
         sendMessage(conversationId, values?.message as string).then((res) => {
           if (res?.success) {
-            toast.success(res.success);
             form.reset();
             conversationStore.setImage(null);
 
