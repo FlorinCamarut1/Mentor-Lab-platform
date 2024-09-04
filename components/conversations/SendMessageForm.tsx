@@ -17,6 +17,7 @@ import { sendMessage } from "@/actions/conversation/sendMessage";
 import { useConversationById } from "@/hooks/conversation/useConversationById";
 import { PiNumberOneLight } from "react-icons/pi";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import { User } from "@prisma/client";
 
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -25,11 +26,13 @@ import useConversationStore from "@/store/conversationStore";
 interface SendMessageFormProps {
   conversationId: string;
   scrollToBottom: () => void;
+  currentUser: User;
 }
 
 const SendMessageForm = ({
   conversationId,
   scrollToBottom,
+  currentUser,
 }: SendMessageFormProps) => {
   const conversationStore = useConversationStore();
 
@@ -52,6 +55,31 @@ const SendMessageForm = ({
   });
 
   const onSubmit = async (values: z.infer<typeof SendMessageSchema>) => {
+    const optimisticMessage = {
+      id: Date.now().toString(),
+      conversationId: conversationId,
+      senderId: currentUser?.id,
+      body: values?.message as string,
+    };
+
+    mutateCurrentConversation(
+      (currentData: any) => ({
+        ...currentData,
+        messages: [...(currentData?.messages || []), optimisticMessage],
+      }),
+      {
+        optimisticData: (currentData: any) => ({
+          ...currentData,
+          messages: [...(currentData?.messages || []), optimisticMessage],
+        }),
+
+        rollbackOnError: true,
+        populateCache: true,
+        revalidate: false,
+      },
+    );
+    form.setValue("message", "");
+
     if (conversationStore.image) {
       const formData = new FormData();
       formData.append("file", conversationStore.image);

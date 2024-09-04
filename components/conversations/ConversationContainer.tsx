@@ -2,7 +2,7 @@
 
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { User } from "@prisma/client";
 import { useConversationById } from "@/hooks/conversation/useConversationById";
@@ -95,6 +95,7 @@ const ConversationContainer = ({ currentUser }: ConversationContainerProps) => {
       </ScrollArea>
 
       <SendMessageForm
+        currentUser={currentUser}
         conversationId={conversationId}
         scrollToBottom={scrollToBottom}
       />

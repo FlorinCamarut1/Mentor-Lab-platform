@@ -4,8 +4,6 @@ import { getCurrentUser } from "../getCurrentUser";
 import { pusherServer } from "@/lib/pusher";
 
 import db from "@/lib/db";
-import { notEqual } from "assert";
-import { error } from "console";
 
 export const sendMessage = async (
   conversationId: string,
