@@ -13,8 +13,8 @@ const AreYouReadySection = () => {
             </h2>
             <p className="max-w-[900px] text-blue-100 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Alătură-te Mentor-Lab astăzi și fă primul pas către succesul
-              academic. Platforma noastră bazată pe AI te va potrivi cu mentorul
-              perfect pentru a te ghida în călătoria ta de licență.
+              academic. Platforma noastră bazată pe GPT te va potrivi cu
+              mentorul perfect pentru a te ghida în călătoria ta de licență.
             </p>
           </div>
           <Button
