@@ -20,7 +20,7 @@ const AdminDashboard = () => {
         <div className="flex-1">
           <Suspense fallback={<Loading />}>
             {" "}
-            <DataTable columns={columns} data={data} />;
+            <DataTable columns={columns} data={data} />
           </Suspense>
         </div>
         <div className="grow-0">

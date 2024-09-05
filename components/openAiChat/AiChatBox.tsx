@@ -13,6 +13,7 @@ import Link from "next/link";
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface AiChatBotProps {
   open: boolean;
@@ -35,7 +36,7 @@ const AiChatBox = ({ open, onClose }: AiChatBotProps) => {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current?.scrollIntoView(false);
     }
   }, [messages]);
 
@@ -63,33 +64,36 @@ const AiChatBox = ({ open, onClose }: AiChatBotProps) => {
             <IoCloseSharp size={20} />
           </Button>
         </div>
-        <div
-          className="mt-3 h-full overflow-y-auto px-3 scrollbar scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full"
-          ref={scrollRef}
-        >
-          {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} onClick={onClose} />
-          ))}
-          {isLoading && lastMessageIsUser && (
-            <ChatMessage
-              message={{ role: "assistant", content: "Mă gândesc..." }}
-            />
-          )}
-          {error && (
-            <ChatMessage
-              message={{
-                role: "assistant",
-                content: "Ceva a mers greșit...încearcă din nou.",
-              }}
-            />
-          )}
-          {!error && messages.length === 0 && (
-            <div className="flex h-full items-center justify-center gap-3">
-              <SiProbot size={30} />
-              Cauți un mentor?🤔 Eu te pot îndruma!
-            </div>
-          )}
-        </div>
+        <ScrollArea className="h-full w-full">
+          <div className="mt-3 h-full overflow-y-auto px-3" ref={scrollRef}>
+            {messages.map((message) => (
+              <ChatMessage
+                key={message.id}
+                message={message}
+                onClick={onClose}
+              />
+            ))}
+            {isLoading && lastMessageIsUser && (
+              <ChatMessage
+                message={{ role: "assistant", content: "Mă gândesc..." }}
+              />
+            )}
+            {error && (
+              <ChatMessage
+                message={{
+                  role: "assistant",
+                  content: "Ceva a mers greșit...încearcă din nou.",
+                }}
+              />
+            )}
+            {!error && messages.length === 0 && (
+              <div className="flex h-full items-center justify-center gap-3">
+                <SiProbot size={30} />
+                Cauți un mentor?🤔 Eu te pot îndruma!
+              </div>
+            )}
+          </div>
+        </ScrollArea>
         <form onSubmit={handleSubmit} className="m-3 flex gap-1">
           <Button
             title="Șterge conversația"
