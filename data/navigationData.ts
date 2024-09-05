@@ -18,7 +18,7 @@ export const navLinkData = [
     title: "Dashboard",
     href: "/dashboard",
     protected: true,
-    role: ["ADMIN", "TEACHER", "STUDENT"],
+    role: ["TEACHER", "STUDENT"],
   },
   {
     id: 4,

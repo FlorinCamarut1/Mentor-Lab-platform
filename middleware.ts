@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 
-import { AUTH_ROUTES, PROTECTED_ROUTES } from "./routes";
+import { ADMIN_ROUTES, AUTH_ROUTES, PROTECTED_ROUTES } from "./routes";
 
 export const { auth } = NextAuth(authConfig);
 
@@ -14,6 +14,9 @@ export default auth((req) => {
     nextUrl.pathname.startsWith(path),
   );
   const isAuthRoute = AUTH_ROUTES.some((path) =>
+    nextUrl.pathname.startsWith(path),
+  );
+  const isAdminRoute = ADMIN_ROUTES.some((path) =>
     nextUrl.pathname.startsWith(path),
   );
 
@@ -35,6 +38,11 @@ export default auth((req) => {
    * If the user is not logged in and tries to access an auth route
    */
   if (isLoggedIn && isAuthRoute) {
+    return Response.redirect(
+      new URL(`/dashboard?callbackUrl=${encodedCallbackUrl}`, nextUrl),
+    );
+  }
+  if (!isAdmin && isAdminRoute) {
     return Response.redirect(
       new URL(`/dashboard?callbackUrl=${encodedCallbackUrl}`, nextUrl),
     );
