@@ -6,6 +6,7 @@ import { MessageCircleIcon } from "lucide-react";
 import { createConversation } from "@/actions/conversation/createConversation";
 
 import toast from "react-hot-toast";
+import useConversationStore from "@/store/conversationStore";
 
 interface SendMessageBadgeProps {
   sendMessageTo: string;
@@ -15,12 +16,14 @@ const SendMessageBadge = ({ sendMessageTo }: SendMessageBadgeProps) => {
   const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
+  const conversationStore = useConversationStore();
 
   const startConversationHandler = () => {
     startTransition(() => {
       createConversation(sendMessageTo).then((res) => {
         if (res.success) {
           router.push(`/conversations?conversation=${res?.conversation?.id}`);
+          conversationStore.setMobileConversationBoxOpen(true);
         } else {
           toast.error(res.error as string);
         }

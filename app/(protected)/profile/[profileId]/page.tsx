@@ -28,10 +28,12 @@ import JoinTeacherBox from "@/components/joinTeacherRequests/JoinTeacherBox";
 import TeacherAvaibleSpotsPill from "@/components/profile/TeacherAvaibleSpotsPill";
 import useReqByUserId from "@/hooks/joinTeacherRequest/useReqByUserId";
 import toast from "react-hot-toast";
+import useConversationStore from "@/store/conversationStore";
 
 export default function Component() {
   const email = usePathname().split("/").pop() as string;
   const router = useRouter();
+  const conversationStore = useConversationStore();
 
   const [isPending, startTransition] = useTransition();
   const { data: profileData } = useUserByEmail(email);
@@ -51,6 +53,7 @@ export default function Component() {
       createConversation(profileData?.id).then((res) => {
         if (res.success) {
           router.push(`/conversations?conversation=${res?.conversation?.id}`);
+          conversationStore.setMobileConversationBoxOpen(true);
         } else {
           toast.error(res.error as string);
         }
