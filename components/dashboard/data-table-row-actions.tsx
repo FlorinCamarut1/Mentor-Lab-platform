@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { createConversation } from "@/actions/conversation/createConversation";
 import toast from "react-hot-toast";
+import useConversationStore from "@/store/conversationStore";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData> & { original: UserTableType };
@@ -35,12 +36,14 @@ export function DataTableRowActions<TData>({
   const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
+  const conversationStore = useConversationStore();
 
   const startConversationHandler = () => {
     startTransition(() => {
       createConversation(row?.original?.id).then((res) => {
         if (res.success) {
           router.push(`/conversations?conversation=${res?.conversation?.id}`);
+          conversationStore.setMobileConversationBoxOpen(true);
         } else {
           toast.error(res.error as string);
         }

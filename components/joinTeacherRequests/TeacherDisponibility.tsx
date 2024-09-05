@@ -51,6 +51,7 @@ const TeacherDisponibility = ({ teacherId }: TeacherDisponibilityProps) => {
         (res) => {
           if (res.success) {
             toast.success(res.success);
+            setPopoverOpen(false);
             mutate();
           } else {
             toast.error(res.error as string);

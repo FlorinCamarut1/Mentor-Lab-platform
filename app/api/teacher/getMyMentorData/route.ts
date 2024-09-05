@@ -27,6 +27,10 @@ export const GET = async (req: NextRequest) => {
       },
     });
 
+    if (!currentAcceptedStudent?.AcceptedStudent?.teacherId) {
+      return NextResponse.json({ noMentor: "Nu aveti mentor!" });
+    }
+
     const currentStudentTeacher = await db.user.findUnique({
       where: {
         id: currentAcceptedStudent?.AcceptedStudent?.teacherId,
@@ -44,12 +48,6 @@ export const GET = async (req: NextRequest) => {
         linkedlnUrl: true,
       },
     });
-    if (!currentStudentTeacher) {
-      return NextResponse.json(
-        { error: "Nu sunteți înscris unui mentor!" },
-        { status: 401 },
-      );
-    }
 
     return NextResponse.json(currentStudentTeacher);
   } catch (error) {
