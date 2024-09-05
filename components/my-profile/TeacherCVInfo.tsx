@@ -1,10 +1,10 @@
 "use client";
-import { User } from "@prisma/client";
+
 import { FaFilePdf } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
+import { useSession } from "@/hooks/useSession";
 
 import Loading from "@/app/loading";
 import useCvByTeacherId from "@/hooks/CV/useCvByTeacherId";
@@ -15,10 +15,9 @@ import toast from "react-hot-toast";
 import AlertDeleteDialog from "../common/AlertDeleteDialog";
 
 const TeacherCVInfo = () => {
-  const { data: currentUserData, mutate: mutateCurrentUserData } =
-    useCurrentUserData();
+  const { data: sessionData } = useSession();
   const { data: CvUserData, mutate: mutateCV } = useCvByTeacherId(
-    currentUserData?.id as string,
+    sessionData?.user?.id as string,
   );
   const router = useRouter();
   const updatedAt = timeElapsedSince(CvUserData?.updatedAt);

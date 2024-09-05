@@ -48,4 +48,11 @@ export const navLinkData = [
     protected: true,
     role: ["STUDENT", "TEACHER", "ADMIN"],
   },
+  {
+    id: 8,
+    title: "Dashboard Admin",
+    href: "/admin",
+    protected: true,
+    role: ["ADMIN"],
+  },
 ];

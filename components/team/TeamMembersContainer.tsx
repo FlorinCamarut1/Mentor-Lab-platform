@@ -14,19 +14,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-
-import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
+import { useSession } from "@/hooks/useSession";
 
 import timeElapsedSince from "@/utils/timeElapseSince";
 import Image from "next/image";
 import SendMessageBadge from "../common/SendMessageBadge";
 
 const TeamMembersContainer = () => {
-  const { data: currentUserData } = useCurrentUserData();
+  const { data: sessionData } = useSession();
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const { data: teacherTeamMembers } = useTeacherAcceptedStudents(
-    currentUserData?.id as string,
+    sessionData?.user?.id as string,
   );
 
   const filteredTeamMembers = teacherTeamMembers?.[0]?.students?.filter(

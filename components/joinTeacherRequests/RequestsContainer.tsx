@@ -1,8 +1,8 @@
 "use client";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { JoinRequest } from "@prisma/client";
-import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
+import { useSession } from "@/hooks/useSession";
 
 import JoinTeacherBox from "./JoinTeacherBox";
 import TeacherDisponibility from "./TeacherDisponibility";
@@ -10,19 +10,19 @@ import useReqByUserId from "@/hooks/joinTeacherRequest/useReqByUserId";
 import Loading from "@/app/loading";
 
 const RequestsContainer = () => {
-  const { data: currentUserData } = useCurrentUserData();
+  const { data: sessionData } = useSession();
   const { data: requestsData, mutate: mutateRequests } = useReqByUserId(
-    currentUserData?.id as string,
+    sessionData?.user?.id as string,
   );
 
-  const isTeacher = currentUserData?.role === "TEACHER";
+  const isTeacher = sessionData?.user?.role === "TEACHER";
 
   return (
     <Suspense fallback={<Loading />}>
       <ScrollArea className="space-y-4">
         <div className="flex flex-col items-center justify-between lg:flex-row">
           {isTeacher && (
-            <TeacherDisponibility teacherId={currentUserData?.id} />
+            <TeacherDisponibility teacherId={sessionData?.user?.id} />
           )}
           <h3 className="text-md font-semibold text-gray-500">
             Număr cereri:

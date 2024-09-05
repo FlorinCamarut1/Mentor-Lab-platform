@@ -7,9 +7,10 @@ import { Notification, User } from "@prisma/client";
 import { useEffect, useState, useTransition, useRef } from "react";
 import { pusherClient } from "@/lib/pusher";
 import { ScrollArea } from "../ui/scroll-area";
-import { deleteAllMyNotifications } from "@/actions/notifications/deleteAllMyNotifications";
 
 import NotificationBox from "./NotificationBox";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface NotificationBellProps {
   currentUserData: User | null;
@@ -22,11 +23,15 @@ const NotificationBell = ({ currentUserData }: NotificationBellProps) => {
     useNotifications();
   const lastNotificationCountRef = useRef(0);
 
-  const deleteAllNotifications = () => {
-    startTransition(() => {
-      deleteAllMyNotifications();
-      mutateNotifications();
-    });
+  const deleteAllNotifications = async () => {
+    await axios
+      .delete("/api/notifications/deleteAllNotifications")
+      .then((res) => {
+        if (res.status === 200) {
+          mutateNotifications();
+        }
+      })
+      .catch((error) => toast.error(error.response.data.error));
   };
 
   useEffect(() => {

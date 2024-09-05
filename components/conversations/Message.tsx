@@ -12,13 +12,14 @@ import {
 } from "../ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { FaFile } from "react-icons/fa";
+import { Session } from "next-auth";
 
 import timeElapsedSince from "@/utils/timeElapseSince";
 import Link from "next/link";
 
 interface MessageProps {
   messageData: MessageType;
-  currentUser: User;
+  currentUser: Session["user"];
   receiver: User;
   isLastMessage: boolean;
 }

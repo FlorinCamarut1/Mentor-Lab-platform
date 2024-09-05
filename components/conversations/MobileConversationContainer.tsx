@@ -1,14 +1,15 @@
 "use client";
-import useConversationStore from "@/store/conversationStore";
-import ConversationContainer from "./ConversationContainer";
-import { User } from "@prisma/client";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
+
+import useConversationStore from "@/store/conversationStore";
+import ConversationContainer from "./ConversationContainer";
 
 const MobileConversationContainer = ({
   currentUser,
 }: {
-  currentUser: User;
+  currentUser: Session["user"];
 }) => {
   const conversationStore = useConversationStore();
   const router = useRouter();

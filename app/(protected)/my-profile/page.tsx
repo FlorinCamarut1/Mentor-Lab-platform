@@ -1,7 +1,7 @@
 "use client";
 import { Suspense } from "react";
 import { SkeletonCard } from "@/components/common/skeletons/SkeletonCard";
-import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
+import { useSession } from "@/hooks/useSession";
 
 import RegisterForm from "@/components/auth/RegisterForm";
 import Header from "@/components/common/Header";
@@ -12,7 +12,7 @@ import Loading from "@/app/loading";
 import SmallSkeleton from "@/components/common/skeletons/SmallSkeleton";
 
 const MyProfilePage = () => {
-  const { data: currentUserData } = useCurrentUserData();
+  const { data: sessionData } = useSession();
 
   return (
     <>
@@ -26,12 +26,12 @@ const MyProfilePage = () => {
           <Suspense fallback={<SkeletonCard />}>
             <ImageUploadAndCrop />
           </Suspense>
-          {currentUserData?.role === "TEACHER" && (
+          {sessionData?.user?.role === "TEACHER" && (
             <Suspense fallback={<SmallSkeleton />}>
               <UploadCv />
             </Suspense>
           )}
-          {currentUserData?.role === "TEACHER" && (
+          {sessionData?.user?.role === "TEACHER" && (
             <Suspense fallback={<SmallSkeleton />}>
               <TeacherCVInfo />
             </Suspense>
