@@ -16,7 +16,7 @@ const DashboardPage = () => {
     <>
       <Header title="Bun venit la pagina Dashboard" />
       <Suspense fallback={<Loading />}>
-        <DataTable columns={columns} data={data} />;
+        <DataTable columns={columns} data={data} />
       </Suspense>
     </>
   );
