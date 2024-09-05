@@ -1,21 +1,19 @@
 "use client";
 
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { User } from "@prisma/client";
 import { useConversationById } from "@/hooks/conversation/useConversationById";
 import { pusherClient } from "@/lib/pusher";
 import { useMyConversations } from "@/hooks/conversation/useMyConversations";
 import { ScrollArea } from "../ui/scroll-area";
+import { Session } from "next-auth";
 
 import Message from "./Message";
-
 import SendMessageForm from "./SendMessageForm";
 
 interface ConversationContainerProps {
-  currentUser: User;
+  currentUser: Session["user"];
 }
 
 const ConversationContainer = ({ currentUser }: ConversationContainerProps) => {

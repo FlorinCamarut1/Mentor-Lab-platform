@@ -1,4 +1,3 @@
-import { deleteNotificationById } from "@/actions/notifications/deleteNotificationById";
 import { Notification } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { IoCloseCircleOutline } from "react-icons/io5";
@@ -6,6 +5,9 @@ import { IconType } from "react-icons/lib";
 import { TbMessage } from "react-icons/tb";
 import { FiGitPullRequest } from "react-icons/fi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface NotificationBoxProps {
   notificationData: Notification;
@@ -16,9 +18,17 @@ const NotificationBox = ({
   notificationData,
   mutateNotifications,
 }: NotificationBoxProps) => {
-  const deleteFunction = () => {
-    deleteNotificationById(notificationData?.id);
-    mutateNotifications();
+  const deleteFunction = async () => {
+    await axios
+      .delete(
+        `/api/notifications/deleteNotificationById/${notificationData?.id}`,
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          mutateNotifications();
+        }
+      })
+      .catch((error) => toast.error(error.response.data.error));
   };
 
   switch (notificationData.notificationType) {

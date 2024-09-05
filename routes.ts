@@ -15,3 +15,5 @@ export const PROTECTED_ROUTES = [
 ];
 
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+
+export const ADMIN_ROUTES = ["/admin"];

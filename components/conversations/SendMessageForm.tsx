@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useTransition } from "react";
 import { sendMessage } from "@/actions/conversation/sendMessage";
 import { useConversationById } from "@/hooks/conversation/useConversationById";
 import { PiNumberOneLight } from "react-icons/pi";
 import { IoCloseCircleSharp } from "react-icons/io5";
-import { User } from "@prisma/client";
+import { Session } from "next-auth";
 
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -26,7 +26,7 @@ import useConversationStore from "@/store/conversationStore";
 interface SendMessageFormProps {
   conversationId: string;
   scrollToBottom: () => void;
-  currentUser: User;
+  currentUser: Session["user"];
 }
 
 const SendMessageForm = ({

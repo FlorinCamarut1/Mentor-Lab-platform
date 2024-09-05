@@ -1,6 +1,4 @@
 "use client";
-import Header from "@/components/common/Header";
-import SendMessageBadge from "@/components/common/SendMessageBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +19,8 @@ import { MenuItem } from "@/components/team/TeamMembersContainer";
 import { Suspense } from "react";
 import { SkeletonCard } from "@/components/common/skeletons/SkeletonCard";
 
+import Header from "@/components/common/Header";
+import SendMessageBadge from "@/components/common/SendMessageBadge";
 import Link from "next/link";
 
 const MyMentorPage = () => {
