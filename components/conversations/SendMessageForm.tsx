@@ -2,7 +2,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FaImage } from "react-icons/fa6";
 import {
   Form,
   FormControl,
@@ -18,6 +17,7 @@ import { useConversationById } from "@/hooks/conversation/useConversationById";
 import { PiNumberOneLight } from "react-icons/pi";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { Session } from "next-auth";
+import { FaRegFile } from "react-icons/fa";
 
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -141,6 +141,7 @@ const SendMessageForm = ({
             <FormItem className="flex-1">
               <FormControl>
                 <Input
+                  autoComplete="off"
                   placeholder="Trimite un mesaj..."
                   {...field}
                   ref={inputRef}
@@ -170,7 +171,7 @@ const SendMessageForm = ({
                 />
               </div>
             ) : (
-              <FaImage size={30} className="cursor-pointer" />
+              <FaRegFile size={30} className="cursor-pointer" />
             )}
           </label>
           <Input

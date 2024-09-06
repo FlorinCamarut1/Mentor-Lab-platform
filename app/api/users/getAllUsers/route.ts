@@ -3,6 +3,9 @@ import db from "@/lib/db";
 import { auth } from "@/auth";
 
 export const GET = async (req: NextRequest) => {
+  if (req.method !== "GET")
+    return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
+
   const session = await auth();
 
   if (!session)
@@ -10,8 +13,6 @@ export const GET = async (req: NextRequest) => {
       { error: "Trebuie să fiți autentificat!" },
       { status: 401 },
     );
-  if (req.method !== "GET")
-    return NextResponse.json({ error: "Metodă nepermisa!" }, { status: 405 });
 
   try {
     const users = await db.user.findMany({
