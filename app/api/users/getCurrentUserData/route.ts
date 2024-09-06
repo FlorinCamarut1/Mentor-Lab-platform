@@ -13,6 +13,7 @@ export const GET = async (req: NextRequest) => {
       },
       include: {
         CV: true,
+        accounts: true,
       },
     });
 

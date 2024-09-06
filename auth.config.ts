@@ -4,12 +4,17 @@ import { getUserByEmail, getUserById } from "@/lib/dbUtils";
 import { LoginSchema } from "@/schemas";
 import type { NextAuthConfig } from "next-auth";
 
+import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 import db from "./lib/db";
 
 export default {
   providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     Credentials({
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials);
@@ -30,7 +35,10 @@ export default {
   ],
 
   callbacks: {
-    async signIn({ user }) {
+    async signIn({ user, account }) {
+      console.log(account);
+      if (account?.provider !== "credentials") return true;
+
       const existingUser = await getUserById(user.id);
       if (!existingUser) {
         return false;

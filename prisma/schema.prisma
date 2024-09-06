@@ -49,17 +49,18 @@ model Account {
 }
 
 model User {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String?
-  email       String?   @unique
-  image       String?
-  password    String?
-  phoneNumber String?
-  gitHubUrl   String?
-  facebookUrl String?
-  linkedlnUrl String?
-  role        UserRole  @default(STUDENT)
-  accounts    Account[]
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  image         String?
+  password      String?
+  phoneNumber   String?
+  emailVerified DateTime?
+  gitHubUrl     String?
+  facebookUrl   String?
+  linkedlnUrl   String?
+  role          UserRole  @default(STUDENT)
+  accounts      Account[]
 
   CV              CV[]
   AcceptedStudent AcceptedStudent?

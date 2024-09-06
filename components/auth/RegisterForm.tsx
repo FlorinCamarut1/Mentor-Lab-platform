@@ -34,6 +34,7 @@ const RegisterForm = ({ isEditing = false }: RegisterFormProps) => {
   const [isPending, startTransition] = useTransition();
   const inviteToken = useSearchParams().get("inviteToken");
   const registerOrEditSchema = z.union([RegisterSchema, EditAccountSchema]);
+  const isGoogleOAuth = currentUserData?.accounts?.[0]?.provider === "google";
 
   const [defaultValues, setDefaultValues] = useState(() => {
     if (isEditing) {
@@ -135,64 +136,68 @@ const RegisterForm = ({ isEditing = false }: RegisterFormProps) => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="mihaiPop@example.com"
-                  {...field}
-                  isPending={isPending}
-                />
-              </FormControl>
+        {!isGoogleOAuth && (
+          <>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="mihaiPop@example.com"
+                      {...field}
+                      isPending={isPending}
+                    />
+                  </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={isEditing ? "oldPassword" : "password"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{isEditing ? "Parola veche" : "Parolă"}</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="******"
-                  {...field}
-                  withEye
-                  isPending={isPending}
-                />
-              </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={isEditing ? "oldPassword" : "password"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{isEditing ? "Parola veche" : "Parolă"}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="******"
+                      {...field}
+                      withEye
+                      isPending={isPending}
+                    />
+                  </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={isEditing ? "newPassword" : "confirmPassword"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                {isEditing ? " Parola nouă" : "Confirmă Parola"}
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="******"
-                  {...field}
-                  withEye
-                  isPending={isPending}
-                />
-              </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={isEditing ? "newPassword" : "confirmPassword"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {isEditing ? " Parola nouă" : "Confirmă Parola"}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="******"
+                      {...field}
+                      withEye
+                      isPending={isPending}
+                    />
+                  </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
         {isEditing && (
           <>
             <FormField
