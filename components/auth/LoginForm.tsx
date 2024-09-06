@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { FcGoogle } from "react-icons/fc";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,19 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
 import { toast } from "react-hot-toast";
-import React, { useTransition } from "react";
+import { useTransition } from "react";
 import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import OauthLoginBtn from "./OauthLoginBtn";
 
 const LoginForm = () => {
   const callbackUrl = useSearchParams().get("callbackUrl");
   const [isPending, startTransition] = useTransition();
-
-  const onOauthLogin = (provider: "google") => {
-    signIn(provider, { callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT });
-  };
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -95,18 +89,7 @@ const LoginForm = () => {
           Autentificare
         </Button>
 
-        <div className="flex justify-center">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOauthLogin("google")}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <p>Sau conectează-te folosind contul</p>
-              <FcGoogle size={30} />
-            </div>
-          </Button>
-        </div>
+        <OauthLoginBtn />
       </form>
     </Form>
   );
