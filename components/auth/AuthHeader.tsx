@@ -8,12 +8,12 @@ interface AuthHeaderProps {
 const AuthHeader = ({ isOnLogin }: AuthHeaderProps) => {
   return (
     <header className="flex flex-col items-center">
-      <div className=" flex gap-2 items-center justify-center ">
+      <div className="flex items-center justify-center gap-2">
         <FaGraduationCap size={80} />
-        <h1 className="text-3xl font-Oswald font-bold">Mentor Lab</h1>
+        <h1 className="font-Oswald text-3xl font-bold">Mentor Lab</h1>
       </div>
       <p className="font-onest font-semibold text-primary">
-        {isOnLogin ? "Autentificare" : "Crează un cont"}
+        {isOnLogin ? "Autentificare" : "Creează un cont"}
       </p>
     </header>
   );

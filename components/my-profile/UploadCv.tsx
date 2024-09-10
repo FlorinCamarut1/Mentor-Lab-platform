@@ -10,6 +10,7 @@ import { useCurrentUserData } from "@/hooks/users/useCurrentUserData";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useCvByTeacherId from "@/hooks/CV/useCvByTeacherId";
+import Loading from "@/app/loading";
 
 const UploadCv = () => {
   const { data: currentUserData, mutate: mutateCurrentUserData } =
@@ -54,6 +55,7 @@ const UploadCv = () => {
       .finally(() => setIsLoading(false));
   };
 
+  if (isLoading) return <Loading />;
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5 rounded-md border-[1px] border-gray-200 p-4 shadow-md">
       <Label htmlFor="pdf" className="font-medium">

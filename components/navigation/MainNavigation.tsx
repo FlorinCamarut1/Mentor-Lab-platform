@@ -142,7 +142,7 @@ export default function MainNavigation({
             navLinkData={
               {
                 id: 0,
-                title: "Logare",
+                title: "Autentificare",
                 href: "/auth/login",
                 role: [undefined],
               } as NavLinksTypes

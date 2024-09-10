@@ -5,7 +5,7 @@ interface AuthFooterProps {
 }
 const AuthFooter = ({ isOnLogin }: AuthFooterProps) => {
   return (
-    <footer className="w-full flex justify-center gap-1">
+    <footer className="flex w-full justify-center gap-1">
       <p className="text-primary">
         {isOnLogin ? "Nu ai un cont?" : "Ai deja un cont?"}
       </p>
@@ -13,7 +13,7 @@ const AuthFooter = ({ isOnLogin }: AuthFooterProps) => {
         className="font-semibold"
         href={isOnLogin ? "/auth/register" : "/auth/login"}
       >
-        {isOnLogin ? "Crează un cont" : "Autentificare"}
+        {isOnLogin ? "Creează un cont" : "Autentificare"}
       </Link>
     </footer>
   );
