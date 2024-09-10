@@ -275,7 +275,7 @@ const RegisterForm = ({ isEditing = false }: RegisterFormProps) => {
           </>
         )}
         <Button className="w-full" type="submit" disabled={isPending}>
-          {isEditing ? "Editează" : "Crează"}
+          {isEditing ? "Editează" : "Creează"}
         </Button>
       </form>
     </Form>
