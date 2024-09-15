@@ -63,7 +63,8 @@ Mentor-Lab is a web-based platform designed to facilitate collaboration between 
 
 Check out the demo video below:
 
-[![Watch the demo video](https://img.youtube.com/vi/dQw4w9WgXcQ/thumbnail.png)](https://youtu.be/xzz0hCUR-0w)
+[![Watch the demo video](https://github.com/FlorinCamarut1/licenta-Mentor-Lab
+/raw/main/assets/thumbnail.png)](https://youtu.be/xzz0hCUR-0w)
 
 ## Conclusion
 
