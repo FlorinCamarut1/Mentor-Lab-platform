@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Mentor-Lab Platform
 
-## Getting Started
+Mentor-Lab is a web-based platform designed to facilitate collaboration between students and mentors, particularly focused on guiding students through the process of writing their bachelor theses. With features like real-time chat, personalized mentor suggestions using AI, and a dashboard for managing teams, Mentor-Lab streamlines the communication and organizational aspects of academic mentorship.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **User Registration & Authentication**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  - Users can create student accounts, while professors require a special invitation from an administrator for access.
+  - Secure authentication managed by [NextAuth.js](https://authjs.dev/).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Profile Management & CV Upload**
+  - Professors can upload their CVs, which are processed using AI to extract relevant information for matching students to mentors.
+- **Dashboard**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+  - The dashboard provides an overview of all users and their roles, allowing easy filtering and contact initiation.
 
-## Learn More
+- **Mentor Application System**
 
-To learn more about Next.js, take a look at the following resources:
+  - Students can apply to join a mentor's team by submitting a project proposal. Mentors can view and accept or reject applications.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Real-time Communication**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  - A chat system powered by [Pusher](https://pusher.com/docs) allows students and mentors to communicate seamlessly.
 
-## Deploy on Vercel
+- **AI-powered Mentor Suggestions**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - A chatbot integrated with OpenAI's GPT-3.5 suggests suitable mentors based on the student’s project requirements and mentor expertise.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Notifications**
+  - Users receive real-time notifications for new messages, mentor applications, and more, ensuring quick responses and efficient collaboration.
+
+## Technologies Used
+
+- **Next.js**: Framework for both front-end and back-end, enabling server-side rendering and static site generation.
+- **Prisma ORM**: Used for efficient database interactions with MongoDB.
+- **MongoDB**: NoSQL database for flexible and scalable data management.
+- **AWS**: Utilized for cloud file storage via Amazon S3.
+- **OpenAI**: Provides AI-driven mentor recommendations using GPT-3.5 Turbo.
+- **Pinecone**: Vector database for handling embeddings and improving AI search efficiency.
+- **Pusher**: Real-time communication framework used for the chat system.
+- **Tailwind CSS**: For flexible and modular design components.
+- **SWR**: Optimizes data fetching with a Stale-While-Revalidate caching strategy.
+
+## Project Setup
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/docs)
+- [MongoDB](https://www.mongodb.com/docs)
+- [AWS S3](https://aws.amazon.com/s3/)
+- OpenAI API key
+- Pinecone API key
+- Pusher credentials
+
+## Future Improvements
+
+- **Sentiment Analysis**: Adding AI-driven sentiment analysis for user interactions with the chatbot to enhance the user experience.
+- **Performance Optimization**: Implement advanced caching and scaling techniques to improve responsiveness and overall efficiency.
+- **Extended Features**: Expand with more features, including user feedback collection and enhanced mentor-student matchmaking.
+
+## Demo
+
+Check out the demo video below:
+
+[![Watch the demo video](https://img.youtube.com/vi/dQw4w9WgXcQ/thumbnail.png)](https://youtu.be/xzz0hCUR-0w)
+
+## Conclusion
+
+This platform aims to improve the process of writing a bachelor's thesis by offering effective communication tools, AI-powered mentor suggestions, and a user-friendly interface for both students and mentors.
